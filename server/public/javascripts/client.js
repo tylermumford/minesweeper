@@ -3,17 +3,26 @@ let startNewGame = async () => {
         method: "POST",
         url: "/games"
     }).then((res) => {
-        console.log("response:", res)
+        const gameID = res;
+        m.route.set("/playing", {gameID: gameID});
     });
 }
 
 //---
 
-let gameUI = () => {
+let GameSelection = () => {
     return {
         view: () => m('div', [
             m(newGameButton)
         ])
+    }
+}
+
+//---
+
+let Playing = () => {
+    return {
+        view: () => m('div', 'Playing game ' + m.route.param('gameID'))
     }
 }
 
@@ -31,9 +40,16 @@ let newGameButton = () => {
 
 //---
 
+function startMithrilApp(inElement) {
+    m.route(inElement, "/start", {
+        "/start": GameSelection,
+        "/playing": Playing
+    });
+}
+
 let gameContainer = document.getElementById('game-container');
 if (gameContainer) {
-    m.mount(gameContainer, gameUI);
+    startMithrilApp(gameContainer);
 } else {
     throw new Error('No game container element.');
 }

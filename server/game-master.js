@@ -9,14 +9,14 @@ let generateGameID = () => {
     return asString;
 }
 
-class gameMaster {
-    games = {}
+class GameMaster {
+    games = []
 
     startNewGame() {
         let id = generateGameID();
-        this.games[id] = {};
+        this.games.push({gameID: id});
         return id;
     }
 };
 
-module.exports = gameMaster;
+module.exports = GameMaster;

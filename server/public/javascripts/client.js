@@ -1,3 +1,13 @@
+class GameModel {
+    static games = []
+
+    static async loadGameList() {
+        GameModel.games = await m.request("/games")
+    }
+}
+
+//---
+
 let startNewGame = async () => {
     m.request({
         method: "POST",
@@ -13,8 +23,36 @@ let startNewGame = async () => {
 let GameSelection = () => {
     return {
         view: () => m('div', [
-            m(newGameButton)
+            m(NewGameButton),
+            m(GameLinks)
         ])
+    }
+}
+
+//---
+
+class GameLinks {
+    oninit = GameModel.loadGameList
+
+    view() {
+        return m(".game-links", [
+            m('h2', 'Open Games'),
+            (GameModel.games.length > 0) ?
+                m("ul", [
+                    GameModel.games.map(game => m("li", m(GameLink, { gameID: game.gameID })))
+                ])
+                : "(none)"
+        ])
+    }
+}
+
+//--
+
+class GameLink {
+    view(vnode) {
+        return m("a", {href: `#!/playing?gameID=${vnode.attrs.gameID}`}, 
+            `Game #${vnode.attrs.gameID}`
+        )
     }
 }
 
@@ -28,7 +66,7 @@ let Playing = () => {
 
 //---
 
-let newGameButton = () => {
+let NewGameButton = () => {
     let startGame = () => {
         startNewGame();
     };

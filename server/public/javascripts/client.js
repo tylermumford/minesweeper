@@ -20,9 +20,9 @@ let startNewGame = async () => {
 
 //---
 
-let GameSelection = () => {
-    return {
-        view: () => m('div', [
+class GameSelection {
+    view() {
+        m('div', [
             m(NewGameButton),
             m(GameLinks)
         ])
@@ -58,21 +58,21 @@ class GameLink {
 
 //---
 
-let Playing = () => {
-    return {
-        view: () => m('div', 'Playing game ' + m.route.param('gameID'))
+class Playing {
+    view() {
+        return m('div', 'Playing game ' + m.route.param('gameID'));
     }
 }
 
 //---
 
-let NewGameButton = () => {
-    let startGame = () => {
+class NewGameButton {
+    startGame() {
         startNewGame();
-    };
+    }
 
-    return {
-        view: () => m('button', {onclick: startGame}, 'Start a new game')
+    view() {
+        return m('button', {onclick: this.startGame}, 'Start a new game');
     }
 }
 

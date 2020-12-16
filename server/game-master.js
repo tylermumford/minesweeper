@@ -19,4 +19,4 @@ class GameMaster {
     }
 };
 
-module.exports = GameMaster;
+export default GameMaster;

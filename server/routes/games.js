@@ -1,7 +1,7 @@
-var express = require('express');
-var router = express.Router();
+import { Router } from 'express';
+var router = Router();
 
-let gameMaster = require('../game-master.js');
+import gameMaster from '../game-master.js';
 let gameMasterInstance = new gameMaster();
 
 /* GET games listing. */
@@ -15,4 +15,4 @@ router.post('/', function(req, res, next) {
   res.send(newGameID);
 });
 
-module.exports = router;
+export default router;

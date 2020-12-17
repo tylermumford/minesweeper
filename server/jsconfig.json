@@ -1,0 +1,11 @@
+{
+    "module": "es6",
+    "typeAcquisition": {
+        "include": [
+            "jest"
+        ]
+    },
+    "exclude": [
+        "node_modules"
+    ]
+}

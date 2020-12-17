@@ -22,7 +22,7 @@ let startNewGame = async () => {
 
 class GameSelection {
     view() {
-        m('div', [
+        return m('div', [
             m(NewGameButton),
             m(GameLinks)
         ])

@@ -55,8 +55,7 @@ function defaultGameIDGenerator() {
 
     let inRange = r * (max - min) + min;
     let asInteger = Math.floor(inRange);
-    let asString = new String(asInteger);
-    return asString;
+    return asInteger.toString();
 }
 
 export default Game;

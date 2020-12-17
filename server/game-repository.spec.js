@@ -11,9 +11,14 @@ test('should be create', () => {
 })
 
 test('should create a new game', () => {
+    repo.startNewGame();
+})
+
+test('should return the ID of the new game', () => {
     const id = repo.startNewGame();
 
     expect(id).toBeTruthy();
+    expect(typeof id).toBe('string');
 })
 
 test('should provide the games created', () => {

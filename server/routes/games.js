@@ -1,17 +1,17 @@
 import { Router } from 'express';
 var router = Router();
 
-import gameMaster from '../game-master.js';
-let gameMasterInstance = new gameMaster();
+import GameRepository from '../game-repository.js';
+let gameRepo = new GameRepository();
 
 /* GET games listing. */
 router.get('/', function(req, res, next) {
-  res.send(gameMasterInstance.games);
+  res.send(gameRepo.getAll());
 });
 
 /* POST new game */
 router.post('/', function(req, res, next) {
-  let newGameID = gameMasterInstance.startNewGame();
+  let newGameID = gameRepo.startNewGame();
   res.send(newGameID);
 });
 

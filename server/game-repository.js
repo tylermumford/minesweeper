@@ -1,4 +1,5 @@
-let generateGameID = () => {
+// TODO: Remove this one
+function generateGameID() {
     let r = Math.random();
     const min = 10;
     const max = 1000;
@@ -9,14 +10,18 @@ let generateGameID = () => {
     return asString;
 }
 
-class GameMaster {
-    games = []
+class GameRepository {
+    #games = []
 
     startNewGame() {
         let id = generateGameID();
-        this.games.push({gameID: id});
+        this.#games.push({gameID: id});
         return id;
+    }
+
+    getAll() {
+        return this.#games;
     }
 };
 
-export default GameMaster;
+export default GameRepository;

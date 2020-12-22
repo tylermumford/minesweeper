@@ -1,4 +1,4 @@
-// # Models: Interact with entity classes
+// # Models: Interact with entity classes and network requests
 
 class StartingModel {
     static games = []

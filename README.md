@@ -15,6 +15,13 @@ I'm not sure. Right now, I think it's going to involve each player playing on th
 minefield, but with a catch: even if you reveal a square, you can only see the number if all
 other players have revealed that square. Co-op minesweeper.
 
+When a player hits a mine, they can immediately get a new, fully hidden minefield to play. 
+Other players keep their progress. If all players have hit a mine, the game is over and 
+the players lose.
+
+There are two kinds of winning: All players win if any one player clears their field.
+The players get an "all clear" or some kind of special win if all players clear their fields.
+
 I don't know if it'll be fun to play like this. It certainly doesn't seem like it will scale beyond
 two or three players, and not being able to advance your own game might be frustrating. Minesweeper
 is traditionally very individual and algorithmic. We shall see.

@@ -16,3 +16,26 @@ export default class Game {
      * @type Object.<string, FieldStructure> */
     fields
 }
+
+export function createGame() {
+    const g = new Game
+    g.gameID = defaultGameIDGenerator()
+    g.players = []
+    g.rowCount = 12
+    g.columnCount = 18
+    g.isFinished = false
+    g.difficultyLevel = 0.3
+    g.fields = []
+    
+    return g
+}
+
+function defaultGameIDGenerator() {
+    let r = Math.random();
+    const min = 10;
+    const max = 1000;
+
+    let inRange = r * (max - min) + min;
+    let asInteger = Math.floor(inRange);
+    return asInteger.toString();
+}

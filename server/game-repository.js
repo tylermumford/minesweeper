@@ -1,10 +1,10 @@
-import Game from "../entities/game-class.js.js";
+import {createGame} from "entities";
 
 class GameRepository {
     #games = []
 
     startNewGame() {
-        const g = new Game;
+        const g = createGame();
         this.#games.push(g);
         return g.gameID;
     }

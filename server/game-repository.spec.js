@@ -6,7 +6,7 @@ beforeEach(() => {
     repo = new GameRepository;
 })
 
-test('should be create', () => {
+test('should be created', () => {
     expect(repo).toBeDefined();
 })
 

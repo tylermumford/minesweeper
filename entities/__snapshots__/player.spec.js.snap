@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Player class should serialize to JSON 1`] = `"{\\"name\\":\\"Anonymous\\"}"`;

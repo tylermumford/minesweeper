@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Game class state exporting should export the initial game state 1`] = `"{\\"gameID\\":\\"4567\\",\\"rowCount\\":12,\\"columnCount\\":18,\\"players\\":[]}"`;

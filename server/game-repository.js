@@ -1,4 +1,4 @@
-import Game from "./entities/game-class.js";
+import Game from "../entities/game-class.js.js";
 
 class GameRepository {
     #games = []

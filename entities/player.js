@@ -1,4 +1,4 @@
-class PlayerStructure {
+export default class Player {
     playerID
     name
 

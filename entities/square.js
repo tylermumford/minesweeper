@@ -1,4 +1,4 @@
-class SquareStructure {
+export default class Square {
     // Determined by player's own field
 
     /** [rowNumber, columnNumber] 

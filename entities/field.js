@@ -1,4 +1,4 @@
-class FieldStructure {
+export default class Field {
     rowCount
     columnCount
 

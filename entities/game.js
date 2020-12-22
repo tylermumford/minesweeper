@@ -1,4 +1,4 @@
-class GameStructure {
+export default class Game {
     gameID
     players
 

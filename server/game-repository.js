@@ -14,4 +14,6 @@ class GameRepository {
     }
 };
 
-export default GameRepository;
+
+const singleton = new GameRepository();
+export default singleton;

@@ -7,6 +7,7 @@
 import app from '../app.js';
 import { createServer } from 'http';
 import { Server as SocketServer } from 'socket.io';
+import attachSocketEvents from '../socket-events/socket-events.js';
 
 /**
  * Get port from environment and store in Express.
@@ -33,10 +34,7 @@ server.on('listening', onListening);
  * Attach socket.io
  */
 const io = new SocketServer(server);
-
-io.on('connection', () => {
-  console.log('hey, socket connected')
-})
+attachSocketEvents(io);
 
 /**
  * Normalize a port into a number, string, or false.

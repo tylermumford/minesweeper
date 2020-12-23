@@ -20,18 +20,32 @@ class StartingModel {
 
 class PlayingModel {
     static game = null;
+    static gameStatus = "Pending"
 
     static _gameID;
 
     static async setGameID(id) {
         PlayingModel._gameID = id;
-        await PlayingModel.loadGame();
     }
 
     static async loadGame() {
-        const socket = io();
-        socket.emit('getGame', PlayingModel._gameID)
-        m.request("/games/")
+        Con.socket.emit('gameRequest', PlayingModel._gameID, response => {
+            console.log('acknowledged, response:', response)
+            PlayingModel.game = response.content
+            PlayingModel.gameStatus = response.status
+            m.redraw();
+        })
+    }
+}
+
+class Con {
+    static _socket
+
+    static get socket() {
+        if (Con._socket === undefined) {
+            Con._socket = io();
+        }
+        return Con._socket;
     }
 }
 
@@ -86,10 +100,21 @@ class PlayingScreen {
     async oninit() {
         const gameID = m.route.param('gameID');
         await PlayingModel.setGameID(gameID);
+        await PlayingModel.loadGame();
     }
 
     view() {
-        return m('div', 'Playing game ' + '?');
+        return m('div', [
+            m('p', `Playing game ${PlayingModel.game?.gameID ?? ''} (${PlayingModel.gameStatus})`),
+            m(Field),
+            m('pre', JSON.stringify(PlayingModel.game, null, '  '))
+        ]);
+    }
+}
+
+class Field {
+    view() {
+        return m('div', `(pretend field of ${PlayingModel.game?.rowCount} by ${PlayingModel.game?.columnCount})`)
     }
 }
 

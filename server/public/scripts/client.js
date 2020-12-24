@@ -1,5 +1,34 @@
 // # Models: Interact with entity classes and network requests
 
+class SocketWrapper {
+    _socket = io()
+
+    /** Wraps socket.emit, and redraws Mithril */
+    emit = (eventName, ...emitArgs) => {
+        if (typeof emitArgs[emitArgs.length - 1] === "function") {
+            const originalCallback = emitArgs[emitArgs.length - 1];
+            const newCallback = (...cbArgs) => {
+                originalCallback(...cbArgs);
+                m.redraw();
+            }
+            emitArgs.pop();
+            return this._socket.emit(eventName, ...emitArgs, newCallback);
+        }
+        return this._socket.emit(eventName, ...emitArgs);
+    }
+
+    /** Wraps socket.on, and redraws Mithril */
+    on = (eventName, callback) => {
+        const newCallback = (...args) => {
+            callback(...args);
+            m.redraw();
+        }
+        return this._socket.on(eventName, newCallback);
+    }
+}
+const Socket = new SocketWrapper;
+
+
 class StartingModel {
     static games = []
 
@@ -29,25 +58,15 @@ class PlayingModel {
     }
 
     static async loadGame() {
-        Con.socket.emit('gameRequest', PlayingModel._gameID, response => {
-            console.log('acknowledged, response:', response)
-            PlayingModel.game = response.content
-            PlayingModel.gameStatus = response.status
-            m.redraw();
-        })
+        Socket.emit('gameRequest', PlayingModel._gameID)
     }
 }
 
-class Con {
-    static _socket
-
-    static get socket() {
-        if (Con._socket === undefined) {
-            Con._socket = io();
-        }
-        return Con._socket;
-    }
-}
+Socket.on('gameUpdate', response => {
+    console.log('acknowledged, game:', response)
+    PlayingModel.game = response.content
+    PlayingModel.gameStatus = response.status
+})
 
 // # Components: Display information and interfaces; receive user input
 

@@ -8,10 +8,11 @@ export default function attachSocketEvents(io) {
             console.log('oh, socket disconnected:', socket.id)
         })
 
-        socket.on('gameRequest', (gameID, callback) => {
+        socket.on('gameRequest', gameID => {
             console.log('gameRequest:', gameID)
-            let matchingGame = GameRepository.getAll().find(g => g.gameID == gameID)
-            callback(matchingGame ? ok(matchingGame) : notFound())
+            const matchingGame = GameRepository.get(gameID);
+            const response = matchingGame ? ok(matchingGame) : notFound()
+            socket.emit('gameUpdate', response);
         })
     })
 }

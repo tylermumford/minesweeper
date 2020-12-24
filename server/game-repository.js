@@ -12,8 +12,13 @@ class GameRepository {
     getAll() {
         return this.#games;
     }
+
+    get(gameID) {
+        return this.#games.find(g => g.gameID == gameID)
+    }
 };
 
 
 const singleton = new GameRepository();
 export default singleton;
+export { GameRepository as GameRepositoryClass }

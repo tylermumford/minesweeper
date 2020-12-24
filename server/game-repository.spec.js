@@ -1,9 +1,9 @@
-import GameRepository from "./game-repository.js";
+import { GameRepositoryClass } from "./game-repository.js";
 
 let repo;
 
 beforeEach(() => {
-    repo = new GameRepository;
+    repo = new GameRepositoryClass;
 })
 
 test('should be created', () => {
@@ -28,4 +28,12 @@ test('should provide the games created', () => {
 
     expect(games).toBeDefined();
     expect(games.length).toEqual(1);
+})
+
+test('should fetch a game by ID', () => {
+    const id = repo.startNewGame();
+    
+    const g = repo.get(id);
+
+    expect(g).toBeDefined();
 })

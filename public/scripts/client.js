@@ -48,6 +48,7 @@ class StartingModelConstructor {
 }
 const StartingModel = new StartingModelConstructor;
 
+
 class PlayingModelConstructor {
     game = null;
     gameStatus = "Pending"
@@ -92,7 +93,9 @@ class NewGameButton {
 }
 
 class GameLinks {
-    oninit = StartingModel.loadGameList
+    oninit() {
+        StartingModel.loadGameList()
+    }
 
     view() {
         return m(".game-links", [

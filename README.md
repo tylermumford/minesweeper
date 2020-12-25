@@ -7,7 +7,9 @@ There is no build step. Install dependencies and run `npm start` to start the se
 * `npm test`
 * `npm start`
 
-I'm planning to host it on Heroku when it's more playable.
+All of the client-side code is in `public/scripts/client.js`.
+
+It's currently hosted on a [free Heroku dyno](https://aqueous-atoll-41713.herokuapp.com/).
 
 # How is the multiplayer going to work?
 

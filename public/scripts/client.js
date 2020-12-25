@@ -29,14 +29,14 @@ class SocketWrapper {
 const Socket = new SocketWrapper;
 
 
-class StartingModel {
-    static games = []
+class StartingModelConstructor {
+    games = []
 
-    static async loadGameList() {
-        StartingModel.games = await m.request("/games")
+    async loadGameList() {
+        this.games = await m.request("/games")
     }
 
-    static async startNewGame() {
+    async startNewGame() {
         m.request({
             method: "POST",
             url: "/games"
@@ -46,21 +46,23 @@ class StartingModel {
         });
     }
 }
+const StartingModel = new StartingModelConstructor;
 
-class PlayingModel {
-    static game = null;
-    static gameStatus = "Pending"
+class PlayingModelConstructor {
+    game = null;
+    gameStatus = "Pending"
 
-    static _gameID;
+    _gameID;
 
-    static async setGameID(id) {
-        PlayingModel._gameID = id;
+    async setGameID(id) {
+        this._gameID = id;
     }
 
-    static async loadGame() {
-        Socket.emit('gameRequest', PlayingModel._gameID)
+    async loadGame() {
+        Socket.emit('gameRequest', this._gameID)
     }
 }
+const PlayingModel = new PlayingModelConstructor;
 
 Socket.on('gameUpdate', response => {
     console.log('acknowledged, game:', response)

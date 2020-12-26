@@ -76,6 +76,7 @@ Socket.on('gameUpdate', response => {
 class StartScreen {
     view() {
         return m('div', [
+            m(PlayerNameInput),
             m(NewGameButton),
             m(GameLinks)
         ])
@@ -92,6 +93,42 @@ class NewGameButton {
     }
 }
 
+class PlayerNameInput {
+    knownName = ''
+
+    updateName() {
+        const nameInput = document.getElementById('player-name');
+        const newName = nameInput.value
+        this.knownName = newName.trim();
+        localStorage.playerName = newName.trim() || 'Anonymous';
+    }
+
+    handleNoName() {
+        const nameInput = document.getElementById('player-name');
+        const newName = nameInput.value
+        if (!newName || newName.trim() === "") {
+            this.knownName = 'Anonymous';
+            localStorage.playerName = 'Anonymous'
+        }
+    }
+
+    oninit() {
+        this.knownName = localStorage.playerName || 'Anonymous';
+    }
+
+    view() {
+        return m('p', [
+            m('label', 'Your player name: ',
+                m('input#player-name', {
+                    oninput: () => this.updateName(),
+                    onblur: () => this.handleNoName(),
+                    value: this.knownName
+                })
+            )
+        ])
+    }
+}
+
 class GameLinks {
     oninit() {
         StartingModel.loadGameList()
@@ -99,7 +136,7 @@ class GameLinks {
 
     view() {
         return m(".game-links", [
-            m('h2', 'Open Games'),
+            m('h2', 'Available Games'),
             (StartingModel.games.length > 0) ?
                 m("ul", [
                     StartingModel.games.map(game => m("li", m(GameLink, { gameID: game.gameID })))

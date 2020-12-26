@@ -4,8 +4,10 @@ This is a side project for fun. It's not playable yet.
 
 There is no build step. Install dependencies and run `npm start` to start the server, which serves plain JavaScript files. Pretty old school.
 
-* `npm test`
-* `npm start`
+* Install packages: `npm install`
+* Run tests: `npm test`
+* Start the app: `npm start`
+* Deploy: `git push heroku master`
 
 All of the client-side code is in `public/scripts/client.js`.
 

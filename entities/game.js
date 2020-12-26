@@ -1,33 +1,29 @@
-export default class Game {
-    gameID
-    players
+import { Record } from "immutable";
 
-    rowCount
-    columnCount
+const Game = Record({
+    gameID: null,
+    players: [],
+    
+    rowCount: 12,
+    columnCount: 18,
 
     /** A game is finished when all fields are finished or when every player has hit a mine. */
-    isFinished
+    isFinished: false,
 
     /** Number 0-1 that determines, at game creation, what percentage of squares are mines.
      * @type number */
-    difficultyLevel
+    difficultyLevel: 0.3,
 
     /** An object, keyed by player IDs mapping to their fields.
      * @type Object.<string, FieldStructure> */
-    fields
-}
+    fields: {}
+});
+
+export default Game;
 
 export function createGame() {
-    const g = new Game
-    g.gameID = defaultGameIDGenerator()
-    g.players = []
-    g.rowCount = 12
-    g.columnCount = 18
-    g.isFinished = false
-    g.difficultyLevel = 0.3
-    g.fields = {}
-    
-    return g
+    const g = Game()
+    return g.set('gameID', defaultGameIDGenerator());
 }
 
 function defaultGameIDGenerator() {

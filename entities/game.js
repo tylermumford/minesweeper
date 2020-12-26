@@ -25,7 +25,7 @@ export function createGame() {
     g.columnCount = 18
     g.isFinished = false
     g.difficultyLevel = 0.3
-    g.fields = []
+    g.fields = {}
     
     return g
 }

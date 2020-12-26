@@ -1,16 +1,17 @@
 import {createGame} from "entities";
+import {List} from 'immutable';
 
 class GameRepository {
-    #games = []
+    #games = new List;
 
     startNewGame() {
         const g = createGame();
-        this.#games.push(g);
+        this.#games = this.#games.push(g);
         return g.gameID;
     }
 
     getAll() {
-        return this.#games;
+        return this.#games.toArray();
     }
 
     get(gameID) {

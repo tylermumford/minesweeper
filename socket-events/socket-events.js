@@ -1,4 +1,5 @@
 import GameRepository from "../game-repository.js"
+import { addPlayerAndCreateField, createNewPlayer } from 'entities';
 
 export default function attachSocketEvents(io) {
     io.on('connection', socket => {
@@ -13,6 +14,29 @@ export default function attachSocketEvents(io) {
             const matchingGame = GameRepository.get(gameID);
             const response = matchingGame ? ok(matchingGame) : notFound()
             socket.emit('gameUpdate', response);
+        })
+
+        socket.on('playerJoin', options => {
+            console.log('playerJoin:', options);
+            let {gameID, playerName} = options;
+            playerName = playerName || 'Anonymous';
+
+            const matchingGame = GameRepository.get(gameID);
+            if (!matchingGame) {
+                console.log('player tried to join a game that doesn\'t exist');
+                return;
+            }
+
+            // TODO: set a cookie and use that for the player ID instead of IP address?
+            const player = createNewPlayer(playerName).set('playerID', socket.handshake.address);
+            try {
+                const gameWithPlayerAndField = addPlayerAndCreateField(matchingGame, player)
+                GameRepository.update(gameWithPlayerAndField);
+            } catch (err) {
+                console.log('player rejoining game');
+            }
+            socket.join(matchingGame.gameID);
+            io.to(matchingGame.gameID).emit('gameUpdate', ok(matchingGame));
         })
     })
 }

@@ -72,6 +72,7 @@ class PlayingModelConstructor {
 
     async loadGame() {
         Socket.emit('gameRequest', this._gameID)
+        Socket.emit('playerJoin', {gameID: this._gameID, playerName: StartingModel.currentPlayerName})
     }
 }
 const PlayingModel = new PlayingModelConstructor;
@@ -162,7 +163,6 @@ class PlayingScreen {
         const gameID = m.route.param('gameID');
         await PlayingModel.setGameID(gameID);
         await PlayingModel.loadGame();
-        Socket.emit('playerJoin', {playerName: PlayerNameInput})
     }
 
     view() {

@@ -17,6 +17,14 @@ class GameRepository {
     get(gameID) {
         return this.#games.find(g => g.gameID == gameID)
     }
+
+    update(updatedGame) {
+        const index = this.#games.findIndex(g => g.gameID == updatedGame.gameID);
+        if (index < 0) {
+            throw new Error('Could not find game to update:', updatedGame.gameID);
+        }
+        this.#games = this.#games.set(index, updatedGame);
+    }
 };
 
 

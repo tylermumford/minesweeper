@@ -1,10 +1,18 @@
-export default class Field {
-    rowCount
-    columnCount
+import { Record } from "immutable";
+
+const Field = Record({
+    rowCount: 0,
+    columnCount: 0,
 
     /** A field is finished when all unmined squares are opened, or when a mine is hit */
-    isFinished
+    isFinished: false,
 
     /** @type SquareStructure[][] */
-    squares
+    squares: null
+}, 'Field')
+
+export default Field;
+
+export function createNewField(rowCount, columnCount, difficultyLevel) {
+    return Field()
 }

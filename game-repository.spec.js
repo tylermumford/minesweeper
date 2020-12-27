@@ -37,3 +37,17 @@ test('should fetch a game by ID', () => {
 
     expect(g).toBeDefined();
 })
+
+test('should allow a game to be updated', () => {
+    const id = repo.startNewGame();
+    const game = repo.get(id);
+    const newRowCount = game.rowCount + 4;
+    const updatedGame = game.set('rowCount', newRowCount);
+    expect(updatedGame.rowCount).toBe(newRowCount);
+
+    repo.update(updatedGame);
+
+    const retrievedGame = repo.get(id);
+    expect(retrievedGame.rowCount).toBe(newRowCount);
+
+})

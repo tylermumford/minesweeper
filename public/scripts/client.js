@@ -32,6 +32,17 @@ const Socket = new SocketWrapper;
 class StartingModelConstructor {
     games = []
 
+    currentPlayerName = ''
+
+    constructor() {
+        this.currentPlayerName = localStorage.playerName || 'Anonymous'
+    }
+
+    setPlayerName(name) {
+        this.currentPlayerName = name.trim();
+        localStorage.playerName = name.trim() || 'Anonymous';
+    }
+
     async loadGameList() {
         this.games = await m.request("/games")
     }
@@ -94,26 +105,14 @@ class NewGameButton {
 }
 
 class PlayerNameInput {
-    knownName = ''
+
+    get nameInput() {
+        return document.getElementById('player-name');
+    }
 
     updateName() {
-        const nameInput = document.getElementById('player-name');
-        const newName = nameInput.value
-        this.knownName = newName.trim();
-        localStorage.playerName = newName.trim() || 'Anonymous';
-    }
-
-    handleNoName() {
-        const nameInput = document.getElementById('player-name');
-        const newName = nameInput.value
-        if (!newName || newName.trim() === "") {
-            this.knownName = 'Anonymous';
-            localStorage.playerName = 'Anonymous'
-        }
-    }
-
-    oninit() {
-        this.knownName = localStorage.playerName || 'Anonymous';
+        const newName = this.nameInput.value;
+        StartingModel.setPlayerName(newName);
     }
 
     view() {
@@ -121,8 +120,9 @@ class PlayerNameInput {
             m('label', 'Your player name: ',
                 m('input#player-name', {
                     oninput: () => this.updateName(),
-                    onblur: () => this.handleNoName(),
-                    value: this.knownName
+                    // onblur: () => this.handleNoName(),
+                    placeholder: 'Anonymous',
+                    value: StartingModel.currentPlayerName
                 })
             )
         ])
@@ -162,6 +162,7 @@ class PlayingScreen {
         const gameID = m.route.param('gameID');
         await PlayingModel.setGameID(gameID);
         await PlayingModel.loadGame();
+        Socket.emit('playerJoin', {playerName: PlayerNameInput})
     }
 
     view() {

@@ -29,14 +29,15 @@ export default function attachSocketEvents(io) {
 
             // TODO: set a cookie and use that for the player ID instead of IP address?
             const player = createNewPlayer(playerName).set('playerID', socket.handshake.address);
+            let result = matchingGame;
             try {
-                const gameWithPlayerAndField = addPlayerAndCreateField(matchingGame, player)
-                GameRepository.update(gameWithPlayerAndField);
-            } catch (err) {
+                result = addPlayerAndCreateField(matchingGame, player)
+                GameRepository.update(result);
+            } catch {
                 console.log('player rejoining game');
             }
             socket.join(matchingGame.gameID);
-            io.to(matchingGame.gameID).emit('gameUpdate', ok(matchingGame));
+            io.to(matchingGame.gameID).emit('gameUpdate', ok(result));
         })
     })
 }

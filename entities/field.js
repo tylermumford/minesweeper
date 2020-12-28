@@ -1,4 +1,5 @@
-import { Record } from "immutable";
+import { Record, List, Range } from "immutable";
+import Square from './square.js';
 
 const Field = Record({
     rowCount: 0,
@@ -8,11 +9,16 @@ const Field = Record({
     isFinished: false,
 
     /** @type SquareStructure[][] */
-    squares: null
+    squares: List()
 }, 'Field')
 
 export default Field;
 
 export function createNewField(rowCount, columnCount, difficultyLevel) {
-    return Field()
+    const squares = List(Range(0, rowCount || 0))
+        .map(row => List(Range(0, columnCount || 0))
+            .map(column => Square())
+        )
+    return Field({rowCount, columnCount})
+        .set('squares', squares);
 }

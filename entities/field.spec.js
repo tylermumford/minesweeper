@@ -1,5 +1,5 @@
 import * as funcs from './field.js';
-import { Record } from 'immutable';
+import { List, Record } from 'immutable';
 
 test('should create a field', () => {
     const f = funcs.createNewField();
@@ -38,5 +38,35 @@ describe('field creation', () => {
         const singleSquare = f.getIn(['squares', 1, 1]);
         expect(singleSquare).toBeDefined();
         expect(Record.isRecord(singleSquare)).toBe(true);
+    })
+
+    describe('creating the squares of the field', () => {
+        const halfMines = funcs.createNewField(10, 10, 0.5);
+        const noMines = funcs.createNewField(10, 10, 0);
+        const allMines = funcs.createNewField(10, 10, 1);
+        
+        test('should set coordinates of each square', () => {
+            const s = halfMines.squares;
+            expect(s.getIn([0, 0]).coordinates).toBeDefined()
+            expect(s.getIn([0, 0]).coordinates).toEqual(List.of(0, 0))
+            expect(s.getIn([0, 1]).coordinates).toEqual(List.of(0, 1))
+            expect(s.getIn([1, 0]).coordinates).toEqual(List.of(1, 0))
+            expect(s.getIn([1, 1]).coordinates).toEqual(List.of(1, 1))
+        })
+
+        test('should set no sqares to be mines with difficulty 0', () => {
+            const hasNoMines = noMines.squares.flatten().every(s => s.isMine === false);
+            expect(hasNoMines).toBe(true);
+        })
+
+        test('should set all squares to be mines with difficulty 1', () => {
+            const hasAllMines = allMines.squares.flatten().every(s => s.isMine === true);
+            expect(hasAllMines).toBe(true)
+        })
+
+        test('should set half of all squares to be mines with difficulty 0.5', () => {
+            const mineCount = halfMines.squares.flatten().count(s => s.isMine === true);
+            expect(mineCount).toEqual(50);
+        })
     })
 })

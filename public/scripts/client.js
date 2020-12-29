@@ -32,6 +32,7 @@ const Socket = new SocketWrapper;
 class StartingModelConstructor {
     games = []
 
+    currentPlayerID = null
     currentPlayerName = ''
 
     constructor() {
@@ -58,6 +59,8 @@ class StartingModelConstructor {
     }
 }
 const StartingModel = new StartingModelConstructor;
+
+Socket.on('assignedPlayerID', id => StartingModel.currentPlayerID = id)
 
 
 class PlayingModelConstructor {
@@ -176,7 +179,22 @@ class PlayingScreen {
 
 class Field {
     view() {
-        return m('div', `(pretend field of ${PlayingModel.game?.rowCount} by ${PlayingModel.game?.columnCount})`)
+        const myField = PlayingModel.game?.fields[StartingModel.currentPlayerID];
+        return m('div.field', [
+            m('h4', 'Your Field'),
+            m('table',
+                (!myField) ? '' : myField.squares.map(row => m('tr', row.map(square => m(Square, {squareData: square}))))
+            )
+        ])
+
+    }
+}
+
+class Square {
+    view(vnode) {
+        const square = vnode.attrs.squareData;
+        const emSpace = ' ';
+        return m('button.square', {title: square.isMine ? '(a mine)' : null}, emSpace)
     }
 }
 

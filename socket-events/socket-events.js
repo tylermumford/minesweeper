@@ -5,6 +5,8 @@ export default function attachSocketEvents(io) {
     io.on('connection', socket => {
         console.log('hey, socket connected:', socket.id)
 
+        socket.emit('assignedPlayerID', socket.handshake.address);
+
         socket.on('disconnect', () => {
             console.log('oh, socket disconnected:', socket.id)
         })

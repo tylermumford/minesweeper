@@ -172,7 +172,7 @@ class PlayingScreen {
         return m('div', [
             m('p', `Playing game ${PlayingModel.game?.gameID ?? ''} (${PlayingModel.gameStatus})`),
             m(Field),
-            m('pre', JSON.stringify(PlayingModel.game, null, '  '))
+            // m('pre', JSON.stringify(PlayingModel.game, null, '  '))
         ]);
     }
 }
@@ -182,8 +182,8 @@ class Field {
         const myField = PlayingModel.game?.fields[StartingModel.currentPlayerID];
         return m('div.field', [
             m('h4', 'Your Field'),
-            m('table',
-                (!myField) ? '' : myField.squares.map(row => m('tr', row.map(square => m(Square, {squareData: square}))))
+            m('div.field-grid',
+                (!myField) ? '' : myField.squares.map(row => row.map(square => m(Square, {squareData: square})))
             )
         ])
 
@@ -194,7 +194,8 @@ class Square {
     view(vnode) {
         const square = vnode.attrs.squareData;
         const emSpace = ' ';
-        return m('button.square', {title: square.isMine ? '(a mine)' : null}, emSpace)
+        const coords = square.coordinates.toString();
+        return m('button.square', {title: coords + (square.isMine ? ' (a mine)' : '')}, emSpace)
     }
 }
 

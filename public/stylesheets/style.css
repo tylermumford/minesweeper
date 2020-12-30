@@ -24,11 +24,17 @@ a {
   transition: border-radius, background-color;
 }
 
-.square:hover {
+.square:not(.square--opened):hover {
   background-color: rgb(196, 196, 196);
   border-radius: 4px;
 }
 
 .square:active {
   background-color: black;
+}
+
+.square--opened {
+  border-radius: 4px;
+  background-color: transparent;
+  border: solid 1px lightgray;
 }

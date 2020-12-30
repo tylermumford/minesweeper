@@ -41,6 +41,24 @@ export default function attachSocketEvents(io) {
             socket.join(matchingGame.gameID);
             io.to(matchingGame.gameID).emit('gameUpdate', ok(result));
         })
+
+        socket.on('click', square => {
+            console.log('click received:', square.coordinates)
+            try {
+                const [row, col] = square.coordinates;
+                const gameID = Array.from(socket.rooms)[1];
+                const playerID = socket.handshake.address;
+                const matchingGame = GameRepository.get(gameID)
+                const matchingSquare = matchingGame.getIn(['fields', playerID, 'squares', row, col])
+                
+                const newSquare = matchingSquare.set('isOpened', true)
+                const newGame = matchingGame.setIn(['fields', playerID, 'squares', row, col], newSquare)
+                GameRepository.update(newGame);
+                io.to(gameID).emit('gameUpdate', ok(newGame));
+            } catch (err) {
+                console.error('error while clicking', err)
+            }
+        })
     })
 }
 

@@ -75,13 +75,17 @@ class PlayingModelConstructor {
 
     async loadGame() {
         Socket.emit('gameRequest', this._gameID)
-        Socket.emit('playerJoin', {gameID: this._gameID, playerName: StartingModel.currentPlayerName})
+        Socket.emit('playerJoin', { gameID: this._gameID, playerName: StartingModel.currentPlayerName })
+    }
+
+    async handleClick(square) {
+        Socket.emit('click', square);
     }
 }
 const PlayingModel = new PlayingModelConstructor;
 
 Socket.on('gameUpdate', response => {
-    console.log('acknowledged, game:', response)
+    console.log('received game update', response)
     PlayingModel.game = response.content
     PlayingModel.gameStatus = response.status
 })
@@ -152,7 +156,7 @@ class GameLinks {
 
 class GameLink {
     view(vnode) {
-        return m("a", {href: `#!/playing?gameID=${vnode.attrs.gameID}`}, 
+        return m("a", { href: `#!/playing?gameID=${vnode.attrs.gameID}` },
             `Game #${vnode.attrs.gameID}`
         )
     }
@@ -161,7 +165,7 @@ class GameLink {
 //---
 
 class PlayingScreen {
-    
+
     async oninit() {
         const gameID = m.route.param('gameID');
         await PlayingModel.setGameID(gameID);
@@ -183,7 +187,7 @@ class Field {
         return m('div.field', [
             m('h4', 'Your Field'),
             m('div.field-grid',
-                (!myField) ? '' : myField.squares.map(row => row.map(square => m(Square, {squareData: square})))
+                (!myField) ? '' : myField.squares.map(row => row.map(square => m(Square, { squareData: square })))
             )
         ])
 
@@ -191,11 +195,22 @@ class Field {
 }
 
 class Square {
+    /** @param {MouseEvent} event */
+    handleClick(event, vnode) {
+        PlayingModel.handleClick(vnode.attrs.squareData)
+        console.log(JSON.stringify(vnode.attrs.squareData))
+    }
+
     view(vnode) {
         const square = vnode.attrs.squareData;
         const emSpace = ' ';
         const coords = square.coordinates.toString();
-        return m('button.square', {title: coords + (square.isMine ? ' (a mine)' : '')}, emSpace)
+
+        return m('button.square', {
+            title: coords + (square.isMine ? ' (a mine)' : ''),
+            class: square.isOpened ? 'square--opened' : '',
+            onclick: e => this.handleClick(e, vnode)
+        }, emSpace)
     }
 }
 

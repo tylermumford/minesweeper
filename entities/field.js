@@ -16,15 +16,17 @@ export default Field;
 
 export function createNewField(rowCount = 0, columnCount = 0, difficultyLevel = 0.3) {
     const roller = new DiceRoller(rowCount, columnCount, difficultyLevel);
-    
-    const squares = List(Range(0, rowCount || 0))
+
+    let initialSquares = List(Range(0, rowCount || 0))
         .map(row => List(Range(0, columnCount || 0))
             .map(column => Square({
                 coordinates: List.of(row, column),
                 isMine: roller.get()
             }))
-        )
-    return Field({rowCount, columnCount})
+        );
+
+    let squares = setNumberSurrounding(initialSquares);
+    return Field({ rowCount, columnCount })
         .set('squares', squares);
 }
 
@@ -36,7 +38,7 @@ class DiceRoller {
     _sequence = []
 
     _indexes = []
-    
+
     constructor(rowCount, columnCount, difficultyLevel) {
         this._sequenceLength = rowCount * columnCount;
         this._numberOfTrueValuesToCreate = Math.floor(this._sequenceLength * difficultyLevel);
@@ -70,4 +72,36 @@ class DiceRoller {
         const i = this._indexes.pop();
         this._sequence[i] = true;
     }
+}
+
+function setNumberSurrounding(squares) {
+    const relativeCoordinates = List.of(
+        [-1, 0],
+        [-1, 1],
+        [0, 1],
+        [1, 1],
+        [1, 0],
+        [1, -1],
+        [0, -1],
+        [-1, -1]
+    );
+
+    const calculateSurrounding = s => {
+        const surroundingSquares = relativeCoordinates.map(relative => {
+            const [initialRow, initialCol] = s.coordinates;
+            let lookupRow = initialRow + relative[0];
+            let lookupCol = initialCol + relative[1];
+            if (lookupRow < 0) lookupRow = undefined;
+            if (lookupCol < 0) lookupCol = undefined;
+            // Immutable.List.get supports negative indexes, which we don't want, so we set undefined instead.
+            return squares.getIn([lookupRow, lookupCol], { isMine: false });
+        });
+        return surroundingSquares.count(s => s.isMine);
+    }
+
+    return squares.withMutations(squares =>
+        squares.map(rows => rows.map(s =>
+            s.set('numberOfMinesSurrounding', calculateSurrounding(s))
+        ))
+    );
 }

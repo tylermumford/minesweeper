@@ -68,5 +68,27 @@ describe('field creation', () => {
             const mineCount = halfMines.squares.flatten().count(s => s.isMine === true);
             expect(mineCount).toEqual(50);
         })
+
+        describe('setting numberOfMinesSurrounding', () => {
+            test('should include all zeroes', () => {
+                const isAllZero = noMines.squares.flatten().every(square => square.numberOfMinesSurrounding === 0);
+                expect(isAllZero).toBe(true);
+            })
+            
+            test('should include corners', () => {
+                const countAtCorner = allMines.squares.getIn([0, 0]).numberOfMinesSurrounding;
+                expect(countAtCorner).toBe(3);
+            })
+            
+            test('should include edges', () => {
+                const countAtEdge = allMines.squares.getIn([0, 2]).numberOfMinesSurrounding;
+                expect(countAtEdge).toBe(5);
+            })
+            
+            test('should include the middle', () => {
+                const countInTheMiddle = allMines.squares.getIn([2, 2]).numberOfMinesSurrounding;
+                expect(countInTheMiddle).toBe(8);
+            })
+        })
     })
 })

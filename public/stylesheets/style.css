@@ -1,11 +1,33 @@
+/* Variables */
+
+:root {
+  --body-bg: #f1f1f1;
+  --text-color: #121212;
+  --link-color: #00B7FF;
+  --square-bg: #cacaca;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --body-bg: #121212;
+    --text-color: #dedede;
+  }
+}
+
+/* Elements */
+
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: var(--body-bg);
+  color: var(--text-color);
 }
 
 a {
-  color: #00B7FF;
+  color: var(--link-color);
 }
+
+/* Classes */
 
 .field-grid {
   display: grid;
@@ -19,8 +41,7 @@ a {
   font-size: 1rem;
   line-height: 1rem;
   border: none;
-  background-color: lightgray;
-
+  background-color: var(--square-bg);
   transition: border-radius, background-color;
 }
 
@@ -36,5 +57,5 @@ a {
 .square--opened {
   border-radius: 4px;
   background-color: transparent;
-  border: solid 1px lightgray;
+  border: solid 1px var(--square-bg);
 }

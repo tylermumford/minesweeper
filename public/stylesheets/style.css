@@ -40,6 +40,7 @@ a {
   font-family: monospace;
   font-size: 1rem;
   line-height: 1rem;
+  padding: 1px;
   border: none;
   background-color: var(--square-bg);
   transition: border-radius, background-color;

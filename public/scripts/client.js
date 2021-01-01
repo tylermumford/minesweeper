@@ -210,7 +210,7 @@ class Square {
             title: coords + (square.isMine ? ' (a mine)' : ''),
             class: square.isOpened ? 'square--opened' : '',
             onclick: e => this.handleClick(e, vnode)
-        }, emSpace)
+        }, square.isRevealed ? (square.isMine ? '💥' : square.numberOfMinesSurrounding) : emSpace)
     }
 }
 

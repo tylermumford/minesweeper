@@ -16,6 +16,8 @@ export function createNewPlayer(name = 'Unknown') {
 }
 
 function generateID() {
+    // Credit: StackOverflow, Simon Rigét
+    // https://stackoverflow.com/a/44078785
     const uniqueId = Date.now().toString(36) + Math.random().toString(36).substring(2);
     return uniqueId;
 }

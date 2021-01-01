@@ -52,3 +52,28 @@ export function addPlayerAndCreateField(game, player) {
     result = result.setIn(['fields', player.playerID], field);
     return result;
 }
+
+export function performClick(game, player, coordinates) {
+    if (game.players.includes(player) === false) {
+        throw new Error('That player is not in that game.');
+    }
+
+    const [row, col] = coordinates;
+    const accessPath = ['fields', player.playerID, 'squares', row, col];
+    const isInvalidCoordinates = undefined === game.getIn(accessPath);
+
+    if (isInvalidCoordinates) {
+        throw new Error('Those coordinates are not in range.');
+    }
+
+    let result = game.setIn([...accessPath, 'isOpened'], true);
+
+    const isAllOpened = result.fields.every(field => field.getIn(['squares', row, col, 'isOpened']));
+    if (isAllOpened) {
+        result = result.set('fields', result.fields.map(field => {
+            return field.setIn(['squares', row, col, 'isRevealed'], true)
+        }));
+    }
+    
+    return result;
+}

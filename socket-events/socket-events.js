@@ -1,5 +1,6 @@
 import GameRepository from "../game-repository.js"
-import { addPlayerAndCreateField, createNewPlayer } from 'entities';
+import { addPlayerAndCreateField, createNewPlayer, performClick } from 'entities';
+import { is } from 'immutable'
 
 export default function attachSocketEvents(io) {
     io.on('connection', socket => {
@@ -45,16 +46,20 @@ export default function attachSocketEvents(io) {
         socket.on('click', square => {
             console.log('click received:', square.coordinates)
             try {
-                const [row, col] = square.coordinates;
+                // const [row, col] = square.coordinates;
                 const gameID = Array.from(socket.rooms)[1];
-                const playerID = socket.handshake.address;
                 const matchingGame = GameRepository.get(gameID)
-                const matchingSquare = matchingGame.getIn(['fields', playerID, 'squares', row, col])
+                const playerID = socket.handshake.address;
+                const player = matchingGame.players.find(p => p.playerID == playerID);
                 
-                const newSquare = matchingSquare.set('isOpened', true)
-                const newGame = matchingGame.setIn(['fields', playerID, 'squares', row, col], newSquare)
-                GameRepository.update(newGame);
-                io.to(gameID).emit('gameUpdate', ok(newGame));
+                const newGame = performClick(matchingGame, player, square.coordinates);
+
+                if (is(matchingGame, newGame)) {
+                    console.log('click changed nothing');
+                } else {
+                    GameRepository.update(newGame);
+                    io.to(gameID).emit('gameUpdate', ok(newGame));
+                }
             } catch (err) {
                 console.error('error while clicking', err)
             }

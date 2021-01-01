@@ -11,3 +11,11 @@ test('should be created with a name', () => {
 
     expect(p.name).toBe('Quill');
 })
+
+test('should be created with an ID', () => {
+    const p = createNewPlayer();
+
+    expect(p.playerID).toBeDefined();
+    expect(p.playerID).not.toBe(null);
+    expect(p.playerID.length).toBeGreaterThan(10);
+})

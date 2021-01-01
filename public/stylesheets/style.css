@@ -32,8 +32,8 @@ a {
 .field-grid {
   display: grid;
   gap: 2px;
-  grid-template-columns: repeat(18, 18px);
-  grid-auto-rows: 18px;
+  grid-template-columns: repeat(18, 21px);
+  grid-auto-rows: 21px;
 }
 
 .square {

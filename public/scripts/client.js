@@ -187,6 +187,7 @@ class Field {
         return m('div.field', [
             m('h4', 'Your Field'),
             m('div.field-grid',
+                {style: "--column-count:" + PlayingModel.game?.columnCount},
                 (!myField) ? '' : myField.squares.map(row => row.map(square => m(Square, { squareData: square })))
             )
         ])
@@ -207,7 +208,7 @@ class Square {
         const coords = square.coordinates.toString();
 
         return m('button.square', {
-            title: coords + (square.isMine ? ' (a mine)' : ''),
+            title: coords.toString(),
             class: square.isOpened ? 'square--opened' : '',
             onclick: e => this.handleClick(e, vnode)
         }, square.isRevealed ? (square.isMine ? '💥' : square.numberOfMinesSurrounding) : emSpace)

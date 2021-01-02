@@ -5,15 +5,15 @@ const Game = Record({
     gameID: null,
     players: List(),
     
-    rowCount: 12,
-    columnCount: 18,
+    rowCount: 18,
+    columnCount: 12,
 
     /** A game is finished when all fields are finished or when every player has hit a mine. */
     isFinished: false,
 
     /** Number 0-1 that determines, at game creation, what percentage of squares are mines.
      * @type number */
-    difficultyLevel: 0.3,
+    difficultyLevel: 0.15,
 
     /** An object keyed by player IDs mapping to their fields. */
     fields: Map()

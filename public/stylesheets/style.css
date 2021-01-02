@@ -32,7 +32,7 @@ a {
 .field-grid {
   display: grid;
   gap: 2px;
-  grid-template-columns: repeat(18, 21px);
+  grid-template-columns: repeat(var(--column-count), 21px);
   grid-auto-rows: 21px;
 }
 
@@ -52,11 +52,12 @@ a {
 }
 
 .square:active {
-  background-color: black;
+  background-color: var(--body-bg);
 }
 
 .square--opened {
   border-radius: 4px;
   background-color: transparent;
+  color: var(--text-color);
   border: solid 1px var(--square-bg);
 }

@@ -1,4 +1,5 @@
-import * as funcs from './field.js';
+import Field, * as funcs from './field.js';
+import Square from "./square.js";
 import { List, Record } from 'immutable';
 
 test('should create a field', () => {
@@ -92,3 +93,60 @@ describe('field creation', () => {
         })
     })
 })
+
+describe('finding surrounding squares', () => {
+    let plannedField;
+    beforeEach(() => {
+        plannedField = constructPlannedField();
+    })
+
+    test('should construct a planned field for the tests', () => {
+        expect(plannedField).toMatchSnapshot();
+    })
+
+    test('should define a function', () => {
+        expect(typeof funcs.getSquaresSurrounding).toBe('function');
+    })
+
+    test.each([
+        [null],
+        [undefined],
+        [[-1, -1]],
+        [[-1, 0]],
+        [[0, -1]],
+    ])('location %p should return empty List', input => {
+        expect(funcs.getSquaresSurrounding(input)).toEqual(List());
+    })
+
+    test.each([
+        [[0, 0], 3],
+        [[2, 2], 3],
+        [[0, 1], 5],
+        [[1, 1], 8],
+    ])('location %p should be surrounded by %p squares', (location, length) => {
+        const result = funcs.getSquaresSurrounding(location, plannedField);
+        expect(result.count()).toBe(length);
+    })
+})
+
+function constructPlannedField() {
+    const mine = true, clear = false;
+    /** Shorthand function for creating a square. */
+    function s(isMine, numberSurrounding) {
+        return Square({
+            isMine: isMine,
+            numberOfMinesSurrounding: numberSurrounding
+        });
+    }
+
+    const plannedField = Field({
+        rowCount: 3,
+        columnCount: 3,
+        squares: List.of(
+            List.of(s(mine, 0), s(clear, 1), s(clear, 0)),
+            List.of(s(clear, 1), s(clear, 1), s(clear, 0)),
+            List.of(s(clear, 0), s(clear, 0), s(clear, 0)),
+        )
+    });
+    return plannedField;
+}

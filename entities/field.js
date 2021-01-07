@@ -92,8 +92,16 @@ function setNumberSurrounding(squares) {
  * @param {Field} field The field in which to retrieve surrounding squares.
  */
 export function getSquaresSurrounding(location, field) {
-    if (!location || !field) {
+    const hasNoLocation =
+        !location
+        || (location?.length !== 2 && location?.count() !== 2)
+        || (location[0] < 0 || location[1] < 0);
+    if (hasNoLocation) {
         return List();
+    }
+
+    if (!field || !field.getIn) {
+        throw new Error('Must pass a field to search within.');
     }
 
     const relativeCoordinates = List.of(

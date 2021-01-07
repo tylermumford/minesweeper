@@ -114,8 +114,12 @@ describe('finding surrounding squares', () => {
         [[-1, -1]],
         [[-1, 0]],
         [[0, -1]],
-    ])('location %p should return empty List', input => {
-        expect(funcs.getSquaresSurrounding(input)).toEqual(List());
+    ])('bad location %p should return empty List', input => {
+        expect(funcs.getSquaresSurrounding(input, plannedField)).toEqual(List());
+    })
+
+    test('should throw if no field given', () => {
+        expect(() => funcs.getSquaresSurrounding([0, 0])).toThrow();
     })
 
     test.each([

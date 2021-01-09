@@ -228,7 +228,7 @@ class Square {
         const coords = square.coordinates.toString();
 
         const symbol =
-            !square.isOpened && square.isFlagged ? '🚩' :
+            !square.isOpened && square.isFlagged ? '🔴' :
             square.isOpened && square.isMine ? '💥' :
             square.isOpened && !square.isRevealed ? '?' :
             square.isOpened && square.isRevealed ? square.numberOfMinesSurrounding :

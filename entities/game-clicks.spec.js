@@ -1,5 +1,6 @@
 import * as gameFuncs from './game.js';
 import * as playerFuncs from './player.js';
+import * as fieldFuncs from './field.js';
 import { List } from "immutable";
 
 describe('game clicking', () => {
@@ -75,5 +76,24 @@ describe('game clicking', () => {
         expect(getSquareOf(p1).isRevealed).toBe(true);
         expect(getSquareOf(p2).isRevealed).toBe(true);
     })
+
+    test.skip('should open all squares around a zero', () => {
+        // This test works right now, but I don't want to add this feature yet.
+        // I'm not sure how zeros and revealing will interact yet.
+        const squares = initialGame.fields.get(p1.playerID).squares;
+        const firstZeroSquare = squares.flatten().find(s => s.numberOfMinesSurrounding === 0);
+        if (firstZeroSquare === undefined) {
+            throw "Couldn't find a zero square.";
+        }
+        
+        const clickedGame = gameFuncs.performClick(initialGame, p1, firstZeroSquare.coordinates);
+
+        const squaresAround = fieldFuncs.getSquaresSurrounding(validCoordinates, clickedGame.fields.get(p1.playerID));
+        squaresAround.forEach(square => {
+            expect(square.isOpened).toBe(true);
+        })
+    })
+
+    test.todo('should open squares that weren\'t directly clicked, such as on a zero click')
 
 })

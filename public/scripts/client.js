@@ -92,6 +92,10 @@ class PlayingModelConstructor {
     async handleClick(square) {
         Socket.emit('click', square);
     }
+
+    async handleRightClick(square) {
+        Socket.emit('flag', square);
+    }
 }
 const PlayingModel = new PlayingModelConstructor;
 
@@ -210,7 +214,12 @@ class Square {
     /** @param {MouseEvent} event */
     handleClick(event, vnode) {
         PlayingModel.handleClick(vnode.attrs.squareData)
-        console.log(JSON.stringify(vnode.attrs.squareData))
+    }
+
+    /** @param {MouseEvent} event */
+    handleRightClick(event, vnode) {
+        event.preventDefault();
+        PlayingModel.handleRightClick(vnode.attrs.squareData);
     }
 
     view(vnode) {
@@ -219,6 +228,7 @@ class Square {
         const coords = square.coordinates.toString();
 
         const symbol =
+            !square.isOpened && square.isFlagged ? '🚩' :
             square.isOpened && square.isMine ? '💥' :
             square.isOpened && !square.isRevealed ? '?' :
             square.isOpened && square.isRevealed ? square.numberOfMinesSurrounding :
@@ -227,7 +237,8 @@ class Square {
         return m('button.square', {
             title: coords.toString(),
             class: square.isOpened ? 'square--opened' : '',
-            onclick: e => this.handleClick(e, vnode)
+            onclick: e => this.handleClick(e, vnode),
+            oncontextmenu: e => this.handleRightClick(e, vnode),
         }, symbol)
     }
 }

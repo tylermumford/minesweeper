@@ -4,7 +4,7 @@ import { createNewField } from './field.js'
 const Game = Record({
     gameID: null,
     players: List(),
-    
+
     rowCount: 18,
     columnCount: 12,
 
@@ -44,7 +44,7 @@ export function addPlayerAndCreateField(game, player) {
         const foundPlayer = game.players.get(indexOfExistingPlayer);
         throw new Error('Player already exists with that player ID:' + foundPlayer.toString());
     }
-    
+
     const atEnd = game.players.count();
     let result = game.setIn(['players', atEnd], player);
 
@@ -66,10 +66,36 @@ export function performClick(game, player, coordinates) {
         throw new Error('Those coordinates are not in range.');
     }
 
+    const isAlreadyFlagged = game.getIn([...accessPath, 'isFlagged']);
+    if (isAlreadyFlagged) {
+        return game;
+    }
+
     let result = game.setIn([...accessPath, 'isOpened'], true);
 
     result = gameProgress(result, accessPath);
-    
+
+    return result;
+}
+
+export function performFlagClick(game, player, coordinates) {
+    if (game.players.includes(player) === false) {
+        throw new Error('That player is not in that game.');
+    }
+
+    const [row, col] = coordinates;
+    const accessPath = ['fields', player.playerID, 'squares', row, col];
+    const isInvalidCoordinates = undefined === game.getIn(accessPath);
+
+    if (isInvalidCoordinates) {
+        throw new Error('Those coordinates are not in range.');
+    }
+
+    const isAlreadyFlagged = game.getIn([...accessPath, 'isFlagged']);
+    let result = game.setIn([...accessPath, 'isFlagged'], !isAlreadyFlagged);
+
+    result = gameProgress(result, accessPath);
+
     return result;
 }
 

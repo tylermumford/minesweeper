@@ -12,6 +12,7 @@ describe('game clicking', () => {
 
     // Helper functions
     const clickFor = (player, game) => gameFuncs.performClick(game ?? initialGame, player, validCoordinates);
+    const flagFor = (player, game) => gameFuncs.performFlagClick(game ?? initialGame, player, validCoordinates);
     const getSquareOf = (player, game) => (game ?? resultGame).getIn(['fields', player.playerID, 'squares', 2, 5]);
 
     beforeEach(() => {
@@ -62,6 +63,14 @@ describe('game clicking', () => {
         expect(getSquareOf(p2).isOpened).toBe(false);
     })
 
+    test('should not open a square if it\'s flagged', () => {
+        initialGame = flagFor(p1);
+
+        resultGame = clickFor(p1);
+
+        expect(getSquareOf(p1).isOpened).toBe(false);
+    })
+
     test('should not reveal a square if only some players have clicked it', () => {
         resultGame = clickFor(p1);
 
@@ -77,6 +86,24 @@ describe('game clicking', () => {
         expect(getSquareOf(p2).isRevealed).toBe(true);
     })
 
+    test('should flag a square', () => {
+        resultGame = flagFor(p1);
+        expect(getSquareOf(p1).isFlagged).toBe(true);
+    })
+
+    test('should unflag a square', () => {
+        initialGame = flagFor(p1);
+
+        resultGame = flagFor(p1);
+
+        expect(getSquareOf(p1).isFlagged).toBe(false);
+    })
+
+    test('should not open a square when flagging', () => {
+        resultGame = flagFor(p1);
+        expect(getSquareOf(p1).isOpened).toBe(false);
+    })
+
     test.skip('should open all squares around a zero', () => {
         // This test works right now, but I don't want to add this feature yet.
         // I'm not sure how zeros and revealing will interact yet.
@@ -85,7 +112,7 @@ describe('game clicking', () => {
         if (firstZeroSquare === undefined) {
             throw "Couldn't find a zero square.";
         }
-        
+
         const clickedGame = gameFuncs.performClick(initialGame, p1, firstZeroSquare.coordinates);
 
         const squaresAround = fieldFuncs.getSquaresSurrounding(validCoordinates, clickedGame.fields.get(p1.playerID));

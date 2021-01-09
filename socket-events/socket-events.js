@@ -1,5 +1,5 @@
 import GameRepository from "../game-repository.js"
-import { addPlayerAndCreateField, createNewPlayer, performClick } from 'entities';
+import { addPlayerAndCreateField, createNewPlayer, performClick, performFlagClick } from 'entities';
 import { is, Map } from 'immutable'
 
 export default function attachSocketEvents(io) {
@@ -75,6 +75,28 @@ export default function attachSocketEvents(io) {
                 }
             } catch (err) {
                 console.error('error while clicking', err)
+            }
+        })
+
+        socket.on('flag', square => {
+            console.log('flag received:', square.coordinates)
+            try {
+                // const [row, col] = square.coordinates;
+                const gameID = Array.from(socket.rooms)[1];
+                const matchingGame = GameRepository.get(gameID)
+                const playerID = claimedPlayerIDs.get(socket.id);
+                const player = matchingGame.players.find(p => p.playerID == playerID);
+
+                const newGame = performFlagClick(matchingGame, player, square.coordinates);
+
+                if (is(matchingGame, newGame)) {
+                    console.log('flag click changed nothing');
+                } else {
+                    GameRepository.update(newGame);
+                    io.to(gameID).emit('gameUpdate', ok(newGame));
+                }
+            } catch (err) {
+                console.error('error while flagging', err)
             }
         })
     })

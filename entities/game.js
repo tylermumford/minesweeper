@@ -68,12 +68,19 @@ export function performClick(game, player, coordinates) {
 
     let result = game.setIn([...accessPath, 'isOpened'], true);
 
-    const isAllOpened = result.fields.every(field => field.getIn(['squares', row, col, 'isOpened']));
-    if (isAllOpened) {
-        result = result.set('fields', result.fields.map(field => {
+    result = gameProgress(result, accessPath);
+    
+    return result;
+}
+
+/** Apply the rules of the game, in particular, to squares affected by the square at the access path. */
+function gameProgress(game, accessPath) {
+    const row = accessPath[accessPath.length - 2], col = accessPath[accessPath.length - 1];
+    const isOpenedByAllPlayers = game.fields.every(field => field.getIn(['squares', row, col, 'isOpened']));
+    if (isOpenedByAllPlayers) {
+        game = game.set('fields', game.fields.map(field => {
             return field.setIn(['squares', row, col, 'isRevealed'], true)
         }));
     }
-    
-    return result;
+    return game
 }

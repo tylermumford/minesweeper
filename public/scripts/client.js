@@ -218,11 +218,17 @@ class Square {
         const emSpace = ' ';
         const coords = square.coordinates.toString();
 
+        const symbol =
+            square.isOpened && square.isMine ? '💥' :
+            square.isOpened && !square.isRevealed ? '?' :
+            square.isOpened && square.isRevealed ? square.numberOfMinesSurrounding :
+            emSpace;
+
         return m('button.square', {
             title: coords.toString(),
             class: square.isOpened ? 'square--opened' : '',
             onclick: e => this.handleClick(e, vnode)
-        }, square.isRevealed ? (square.isMine ? '💥' : square.numberOfMinesSurrounding) : emSpace)
+        }, symbol)
     }
 }
 

@@ -60,7 +60,18 @@ class StartingModelConstructor {
 }
 const StartingModel = new StartingModelConstructor;
 
-Socket.on('assignedPlayerID', id => StartingModel.currentPlayerID = id)
+function generateID() {
+    // Credit: StackOverflow, Simon Rigét
+    // https://stackoverflow.com/a/44078785
+    const uniqueId = Date.now().toString(36) + Math.random().toString(36).substring(2);
+    return uniqueId;
+}
+
+if (!sessionStorage.playerID) {
+    sessionStorage.playerID = generateID();
+}
+StartingModel.currentPlayerID = sessionStorage.playerID;
+Socket.emit('claimPlayerID', sessionStorage.playerID);
 
 
 class PlayingModelConstructor {

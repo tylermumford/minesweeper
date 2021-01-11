@@ -17,10 +17,12 @@
 /* Elements */
 
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   background-color: var(--body-bg);
   color: var(--text-color);
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  margin: 0 auto;
+  max-width: 90%;
+  padding: 30px 0;
 }
 
 a {
@@ -34,6 +36,7 @@ a {
   gap: 2px;
   grid-template-columns: repeat(var(--column-count), 24px);
   grid-auto-rows: 24px;
+  justify-content: center;
 }
 
 .square {

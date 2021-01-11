@@ -23,6 +23,7 @@ body {
   margin: 0 auto;
   max-width: 90%;
   padding: 30px 0;
+  user-select: none;
 }
 
 a {
@@ -38,9 +39,6 @@ a {
   grid-auto-rows: 24px;
   justify-content: center;
   touch-action: manipulation;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  user-select: none;
 }
 
 @media (min-width: 900px) {

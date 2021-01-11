@@ -250,6 +250,13 @@ class Square {
     }
 }
 
+// # Configure Hammer
+
+Hammer.defaults.cssProps.userSelect = undefined;
+Hammer.defaults.preset = [
+    [Hammer.Press]
+];
+
 // # Starting procedure
 
 function startMithrilApp(inElement) {

@@ -37,6 +37,7 @@ a {
   grid-template-columns: repeat(var(--column-count), 24px);
   grid-auto-rows: 24px;
   justify-content: center;
+  touch-action: manipulation;
 }
 
 @media (min-width: 900px) {

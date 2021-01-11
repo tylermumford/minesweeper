@@ -38,6 +38,9 @@ a {
   grid-auto-rows: 24px;
   justify-content: center;
   touch-action: manipulation;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 @media (min-width: 900px) {

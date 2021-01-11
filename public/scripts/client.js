@@ -211,6 +211,10 @@ class Field {
 }
 
 class Square {
+    oncreate(vnode) {
+        Hammer.on(vnode.dom, 'press', event => this.handleRightClick(event, vnode))
+    }
+
     /** @param {MouseEvent} event */
     handleClick(event, vnode) {
         PlayingModel.handleClick(vnode.attrs.squareData)

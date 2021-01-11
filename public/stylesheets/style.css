@@ -39,6 +39,12 @@ a {
   justify-content: center;
 }
 
+@media (min-width: 900px) {
+  .field-grid {
+    justify-content: start;
+  }
+}
+
 .square {
   font-family: "Trebuchet MS", sans-serif;
   font-size: 1rem;

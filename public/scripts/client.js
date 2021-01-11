@@ -212,7 +212,10 @@ class Field {
 
 class Square {
     oncreate(vnode) {
-        Hammer.on(vnode.dom, 'press', event => this.handleRightClick(event, vnode))
+        Hammer.on(vnode.dom, 'press', event => {
+            alert('long press detected');
+            this.handleRightClick(event, vnode)
+        })
     }
 
     /** @param {MouseEvent} event */

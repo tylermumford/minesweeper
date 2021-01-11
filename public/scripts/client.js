@@ -212,13 +212,9 @@ class Field {
 
 class Square {
     oncreate(vnode) {
-        Hammer.on(vnode.dom, 'press', event => {
-            alert('long press detected');
+        const hammer = new Hammer(vnode.dom);
+        hammer.on('press', event => {
             this.handleRightClick(event, vnode)
-        })
-
-        Hammer.on(vnode.dom, 'tap', event => {
-            alert('tapped ' + vnode.attrs.squareData.coordinates.toString())
         })
     }
 

@@ -216,6 +216,10 @@ class Square {
             alert('long press detected');
             this.handleRightClick(event, vnode)
         })
+
+        Hammer.on(vnode.dom, 'tap', event => {
+            alert('tapped ' + vnode.attrs.squareData.coordinates.toString())
+        })
     }
 
     /** @param {MouseEvent} event */

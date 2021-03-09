@@ -2,14 +2,17 @@
 
 This is a side project for fun. It's playable—just know that the game design is undergoing changes.
 
-There is no build step. Install dependencies and run `npm start` to start the server, which serves plain JavaScript files. Pretty old school.
+The front-end build is handled by Parcel, and is most easily used via npm scripts.
+Install dependencies and run `npm start` to build everything and start the server.
 
 * Install packages: `npm install`
-* Run tests: `npm test`
-* Start the app: `npm start`
-* Deploy: `git push heroku master`
+* Build and start the app: `npm start`
+* Watch for changes: `npm run live`
+* Run tests: `npm test` and `npm run test:watch`
+* Deploy: `git push heroku [branch-name]`
+* See `package.json` for more.
 
-All of the client-side code is in `public/scripts/client.js`.
+All of the client-side code is in the `frontend` directory.
 
 It's currently hosted on a [free Heroku dyno](https://aqueous-atoll-41713.herokuapp.com/).
 

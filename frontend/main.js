@@ -1,4 +1,7 @@
 // # Models: Interact with entity classes and network requests
+import { io } from "socket.io-client";
+import m from "mithril";
+import Hammer from "hammerjs";
 
 class SocketWrapper {
     _socket = io()
@@ -188,8 +191,12 @@ class PlayingScreen {
     }
 
     view() {
+        if (PlayingModel.game === null) {
+            return m('div', 'No game loaded.');
+        }
+
         return m('div', [
-            m('p', `Playing game ${PlayingModel.game?.gameID ?? ''} (${PlayingModel.gameStatus})`),
+            m('p', `Playing game ${PlayingModel.game.gameID ?? ''} (${PlayingModel.gameStatus})`),
             m(Field),
             // m('pre', JSON.stringify(PlayingModel.game, null, '  '))
         ]);
@@ -198,11 +205,15 @@ class PlayingScreen {
 
 class Field {
     view() {
-        const myField = PlayingModel.game?.fields[StartingModel.currentPlayerID];
+        if (PlayingModel.game === null) {
+            return m('div.field');
+        }
+
+        const myField = PlayingModel.game.fields[StartingModel.currentPlayerID];
         return m('div.field', [
             m('h4', 'Your Field'),
             m('div.field-grid',
-                {style: "--column-count:" + PlayingModel.game?.columnCount},
+                {style: "--column-count:" + PlayingModel.game.columnCount},
                 (!myField) ? '' : myField.squares.map(row => row.map(square => m(Square, { squareData: square })))
             )
         ])

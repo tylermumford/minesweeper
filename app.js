@@ -13,7 +13,7 @@ app.use(logger('dev'));
 app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(join(pwd, 'public')));
+app.use(express.static(join(pwd, 'dist')));
 
 app.use('/', indexRouter);
 app.use('/games', gamesRouter);

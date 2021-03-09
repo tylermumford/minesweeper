@@ -4,10 +4,10 @@
  * Module dependencies.
  */
 
-import app from '../app.js';
+import app from './app.js';
 import { createServer } from 'http';
 import { Server as SocketServer } from 'socket.io';
-import attachSocketEvents from '../socket-events/socket-events.js';
+import attachSocketEvents from './socket-events/socket-events.js';
 
 /**
  * Get port from environment and store in Express.

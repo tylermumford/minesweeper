@@ -1,0 +1,7 @@
+{{template "page_header.html" "Multi-Minesweeper"}}
+
+<form action="/player_name" method="POST">
+    <label>Player name: <input name="player_name"> <button type="submit">Set</button></label>
+</form>
+
+{{template "page_footer.html" .}}

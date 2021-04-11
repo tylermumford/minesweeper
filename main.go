@@ -11,11 +11,17 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
+	e.Debug = true
+	prepareRepository(e)
+	prepareTemplates(e)
+
 	e.Static("/static", "static-assets")
 
-	e.File("/", "static-assets/index.html")
+	e.GET("/", func(c echo.Context) error {
+		return c.Render(200, "index.html", struct{}{})
+	})
 
-	_ = repo
+	e.POST("/player_name", setPlayerName)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }

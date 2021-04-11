@@ -23,7 +23,7 @@ type field struct {
 }
 
 type square struct {
-	Coordinates                             struct{ x, y int }
+	Coordinates                             struct{ X, Y int }
 	IsMine, IsFlagged, IsOpened, IsRevealed bool
 	NumberOfMinesSurrounding                int
 }

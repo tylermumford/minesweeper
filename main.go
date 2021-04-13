@@ -12,16 +12,13 @@ func main() {
 	e.Use(middleware.Recover())
 
 	e.Debug = true
+	preparePlayerId(e)
 	prepareRepository(e)
 	prepareTemplates(e)
 
 	e.Static("/static", "static-assets")
 
-	e.GET("/", func(c echo.Context) error {
-		return c.Render(200, "index.html", struct{}{})
-	})
-
-	e.POST("/player_name", setPlayerName)
+	prepareHandlers(e)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }

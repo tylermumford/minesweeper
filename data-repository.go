@@ -8,6 +8,9 @@ type repository struct {
 	Games map[string]game
 }
 
+// Above: Methods (if any) that manipulate or report on the repository itself.
+// Below: Methods that make the repository available to handlers.
+
 // setOnContext makes the repo available on the context of every request.
 func (r *repository) setOnContext(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {

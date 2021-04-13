@@ -1,0 +1,10 @@
+<turbo-frame id="form_player_name">
+    {{if eq .player_name ""}}
+    <form action="/player_name" method="POST">
+        <label>Player name: <input name="player_name" value="{{.player_name}}"> <button type="submit">Set
+                Name</button></label>
+    </form>
+    {{else}}
+    <p>Welcome to the game, {{.player_name}}.</p>
+    {{end}}
+</turbo-frame>

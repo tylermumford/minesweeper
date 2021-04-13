@@ -1,7 +1,5 @@
 {{template "page_header.html" .}}
 
-<form action="/player_name" method="POST">
-    <label>Player name: <input name="player_name" value="{{.player_name}}"> <button type="submit">Set Name</button></label>
-</form>
+{{template "form_player_name.html" .}}
 
 {{template "page_footer.html" .}}

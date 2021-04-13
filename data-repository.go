@@ -5,7 +5,8 @@ import "github.com/labstack/echo/v4"
 const dataRepo = "dataRepo"
 
 type repository struct {
-	Games map[string]game
+	Games   map[string]game
+	Players map[string]string
 }
 
 // Above: Methods (if any) that manipulate or report on the repository itself.
@@ -34,6 +35,9 @@ func extractRepository(c echo.Context) *repository {
 }
 
 func prepareRepository(e *echo.Echo) {
-	sharedRepository := repository{}
+	sharedRepository := repository{
+		Games:   make(map[string]game),
+		Players: make(map[string]string),
+	}
 	e.Use(sharedRepository.setOnContext)
 }

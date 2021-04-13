@@ -13,6 +13,8 @@ func prepareHandlers(e *echo.Echo) {
 
 	e.GET("/player_name", getPlayerName)
 	e.POST("/player_name", postPlayerName)
+
+	e.GET("/game/:game_id", getGame)
 }
 
 // Handlers: 👇
@@ -34,6 +36,10 @@ func postPlayerName(c echo.Context) error {
 	return c.Redirect(303, "/player_name")
 }
 
+func getGame(c echo.Context) error {
+	return c.Render(200, "show_game.html", newBucket(c))
+}
+
 // Helpers and misc. declarations 👇
 
 // A bucket holds data for a template.
@@ -41,10 +47,12 @@ type bucket map[string]interface{}
 
 func newBucket(c echo.Context) bucket {
 	const defaultTitle = "Multi-Minesweeper"
+	repo := extractRepository(c)
 	return bucket{
 		"title":       defaultTitle,
 		"player_id":   extractPlayerId(c),
-		"player_name": extractRepository(c).Players[extractPlayerId(c)],
+		"player_name": repo.Players[extractPlayerId(c)],
+		"games":       repo.Games,
 	}
 }
 

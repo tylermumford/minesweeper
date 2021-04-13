@@ -3,6 +3,7 @@ package main
 import (
 	"html/template"
 	"io"
+	"strings"
 
 	"github.com/labstack/echo/v4"
 )
@@ -17,7 +18,11 @@ func (g *GoTemplates) Render(w io.Writer, name string, data interface{}, c echo.
 
 func prepareTemplates(e *echo.Echo) {
 	t := &GoTemplates{
-		templates: template.Must(template.ParseGlob("templates/*.html")),
+		templates: template.Must(
+			template.ParseGlob("templates/*.html"),
+		).Funcs(template.FuncMap{
+			"StringsJoin": strings.Join,
+		}),
 	}
 	e.Renderer = t
 }

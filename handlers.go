@@ -1,6 +1,7 @@
 package main
 
 import (
+	"example.com/minesweeper/logic"
 	"example.com/minesweeper/repo"
 	"github.com/labstack/echo/v4"
 )
@@ -38,7 +39,13 @@ func getPlayerName(c echo.Context) error {
 }
 
 func postPlayerName(c echo.Context) error {
-	repo.ExtractRepository(c).Players[extractPlayerId(c)] = c.FormValue("player_name")
+	id := extractPlayerId(c)
+	p := logic.Player{
+		PlayerId: id,
+		Name:     c.FormValue("player_name"),
+	}
+	r := repo.ExtractRepository(c)
+	r.SetPlayer(&p)
 	return c.Redirect(303, "/player_name")
 }
 
@@ -54,11 +61,16 @@ type bucket map[string]interface{}
 func newBucket(c echo.Context) bucket {
 	const defaultTitle = "Multi-Minesweeper"
 	repo := repo.ExtractRepository(c)
+	playerID := extractPlayerId(c)
+	var playerName string
+	if p := repo.Player(playerID); p != nil {
+		playerName = p.Name
+	}
 	return bucket{
 		"title":       defaultTitle,
-		"player_id":   extractPlayerId(c),
-		"player_name": repo.Players[extractPlayerId(c)],
-		"games":       repo.Games,
+		"player_id":   playerID,
+		"player_name": playerName,
+		"games":       repo.Games(),
 	}
 }
 

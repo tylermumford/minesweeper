@@ -1,11 +1,11 @@
-package repo
+package logic
 
 import (
 	"math/rand"
 	"strconv"
 )
 
-type game struct {
+type Game struct {
 	GameId  string
 	Players []player
 
@@ -15,10 +15,10 @@ type game struct {
 	Fields map[string]field
 }
 
-func newGame() *game {
-	g := game{
+func NewGame() *Game {
+	g := Game{
 		GameId:   "G" + strconv.Itoa(rand.Intn(2000)),
-		Players:  make([]player, 0, 2),
+		Players:  make([]player, 2),
 		RowCount: 16,
 		ColCount: 9,
 		Fields:   make(map[string]field),

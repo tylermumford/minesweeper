@@ -1,6 +1,7 @@
 package main
 
 import (
+	"example.com/minesweeper/repo"
 	"github.com/labstack/echo/v4"
 )
 
@@ -9,6 +10,7 @@ import (
 func prepareHandlers(e *echo.Echo) {
 	e.GET("/", getIndex)
 
+	e.GET("/gameplay", getGameplay)
 	e.GET("/privacy", getPrivacy)
 
 	e.GET("/player_name", getPlayerName)
@@ -20,11 +22,15 @@ func prepareHandlers(e *echo.Echo) {
 // Handlers: 👇
 
 func getIndex(c echo.Context) error {
-	return c.Render(200, "index.html", newBucketTitled(c, "Home — Multi-Minesweeper"))
+	return c.Render(200, "index.html", newBucketTitled(c, "Home"))
 }
 
 func getPrivacy(c echo.Context) error {
 	return c.Render(200, "privacy.html", newBucketTitled(c, "Privacy"))
+}
+
+func getGameplay(c echo.Context) error {
+	return c.Render(200, "gameplay.html", newBucketTitled(c, "Gameplay"))
 }
 
 func getPlayerName(c echo.Context) error {
@@ -32,7 +38,7 @@ func getPlayerName(c echo.Context) error {
 }
 
 func postPlayerName(c echo.Context) error {
-	extractRepository(c).Players[extractPlayerId(c)] = c.FormValue("player_name")
+	repo.ExtractRepository(c).Players[extractPlayerId(c)] = c.FormValue("player_name")
 	return c.Redirect(303, "/player_name")
 }
 
@@ -47,7 +53,7 @@ type bucket map[string]interface{}
 
 func newBucket(c echo.Context) bucket {
 	const defaultTitle = "Multi-Minesweeper"
-	repo := extractRepository(c)
+	repo := repo.ExtractRepository(c)
 	return bucket{
 		"title":       defaultTitle,
 		"player_id":   extractPlayerId(c),

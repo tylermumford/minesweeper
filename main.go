@@ -1,6 +1,7 @@
 package main
 
 import (
+	"example.com/minesweeper/repo"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -13,7 +14,7 @@ func main() {
 
 	e.Debug = true
 	preparePlayerId(e)
-	prepareRepository(e)
+	repo.PrepareRepository(e)
 	prepareTemplates(e)
 
 	e.Static("/static", "static-assets")

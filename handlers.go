@@ -18,6 +18,7 @@ func prepareHandlers(e *echo.Echo) {
 	e.POST("/player_name", postPlayerName)
 
 	e.GET("/game/:game_id", getGame)
+	e.POST("/game", postGame)
 }
 
 // Handlers: 👇
@@ -50,7 +51,19 @@ func postPlayerName(c echo.Context) error {
 }
 
 func getGame(c echo.Context) error {
-	return c.Render(200, "show_game.html", newBucket(c))
+	b := newBucket(c)
+	r := repo.ExtractRepository(c)
+	g := r.Game(c.Param("game_id"))
+	b["game"] = g
+	return c.Render(200, "show_game.html", b)
+}
+
+func postGame(c echo.Context) error {
+	g := logic.NewGame()
+	g.Players = append(g.Players, extractPlayer(c))
+	r := repo.ExtractRepository(c)
+	r.AddGame(g)
+	return c.Redirect(303, "/game/"+g.GameId)
 }
 
 // Helpers and misc. declarations 👇
@@ -59,18 +72,14 @@ func getGame(c echo.Context) error {
 type bucket map[string]interface{}
 
 func newBucket(c echo.Context) bucket {
-	const defaultTitle = "Multi-Minesweeper"
-	repo := repo.ExtractRepository(c)
-	playerID := extractPlayerId(c)
-	var playerName string
-	if p := repo.Player(playerID); p != nil {
-		playerName = p.Name
-	}
+	const defaultTitle = "Welcome"
+	r := repo.ExtractRepository(c)
+	p := extractPlayer(c)
 	return bucket{
 		"title":       defaultTitle,
-		"player_id":   playerID,
-		"player_name": playerName,
-		"games":       repo.Games(),
+		"player_id":   p.PlayerId,
+		"player_name": p.Name,
+		"games":       r.Games(),
 	}
 }
 

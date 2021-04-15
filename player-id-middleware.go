@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"strconv"
 
+	"example.com/minesweeper/logic"
+	"example.com/minesweeper/repo"
 	"github.com/labstack/echo/v4"
 )
 
@@ -45,4 +47,19 @@ func extractPlayerId(c echo.Context) string {
 		panic("extractPlayerId: No player ID set.")
 	}
 	return id.(string)
+}
+
+func extractPlayer(c echo.Context) *logic.Player {
+	id := c.Get(player_id)
+	if id == nil {
+		panic("extractPlayer: No player ID set.")
+	}
+
+	r := repo.ExtractRepository(c)
+	foundPlayer := r.Player(id.(string))
+	if foundPlayer == nil {
+		return &logic.Player{PlayerId: id.(string)}
+	}
+
+	return foundPlayer
 }

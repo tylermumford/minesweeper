@@ -36,7 +36,7 @@ func (r *memoryRepo) Game(id string) *logic.Game {
 }
 
 func (r *memoryRepo) Games() []*logic.Game {
-	result := make([]*logic.Game, len(r.AllGames))
+	result := make([]*logic.Game, 0, len(r.AllGames))
 	for i := range r.AllGames {
 		result = append(result, r.AllGames[i])
 	}
@@ -52,7 +52,7 @@ func (r *memoryRepo) Player(id string) *logic.Player {
 }
 
 func (r *memoryRepo) Players() []*logic.Player {
-	result := make([]*logic.Player, len(r.AllPlayers))
+	result := make([]*logic.Player, 0, len(r.AllPlayers))
 	for i := range r.AllPlayers {
 		result = append(result, r.AllPlayers[i])
 	}

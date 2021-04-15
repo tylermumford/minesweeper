@@ -1,7 +1,17 @@
 {{template "page_header.html" .}}
 
-<p>Welcome to a game.</p>
+{{if not .game}}
 
-{{.}}
+<p>Sorry, that game could not be found.</p>
+
+{{template "list_games.html" .}}
+
+{{else}}
+
+<p>Playing Game {{.game.GameId}}</p>
+
+Context {{.}}
+
+{{end}}
 
 {{template "page_footer.html" .}}

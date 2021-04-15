@@ -7,6 +7,9 @@ with {{range $i, $player := .Players}}
 {{end}}
 
 <h2 class="f5">Active game rooms:</h2>
+<form action="/game" method="POST">
+    <button type="submit">Start new game</button>
+</form>
 <ul>
     {{range .games}}
     <li><a href="/game/{{.GameId}}" class="white">{{.GameId}}</a> {{template "summarize_players" .}}</li>

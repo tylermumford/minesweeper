@@ -16,7 +16,7 @@
     {{range .}}
     <button class="
         dib
-        white bg-dark-blue
+        bg-dark-blue {{if .IsMine}}red{{else}}white{{end}}
         w2 h2
         f3 tc
         bn

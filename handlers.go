@@ -60,9 +60,9 @@ func getGame(c echo.Context) error {
 
 func postGame(c echo.Context) error {
 	g := logic.NewGame()
-	g.Players = append(g.Players, extractPlayer(c))
+	g.AddPlayer(extractPlayer(c))
 	r := repo.ExtractRepository(c)
-	r.AddGame(g)
+	r.SetGame(g)
 	return c.Redirect(303, "/game/"+g.GameId)
 }
 

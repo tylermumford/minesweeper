@@ -8,9 +8,21 @@
 
 {{else}}
 
+{{$yourField := index .game.Fields .player_id}}
 <p>Playing Game {{.game.GameId}}</p>
 
-Context {{.}}
+<div class="grid-minefield">
+    {{range $yourField.Squares}}
+    {{range .}}
+    <span class="
+        dib
+        bg-dark-blue
+        w1 h1
+        overflow-hidden
+        ">{{.Coordinates.X}},{{.Coordinates.Y}}</span>
+    {{end}}
+    {{end}}
+</div>
 
 {{end}}
 

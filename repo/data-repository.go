@@ -14,7 +14,7 @@ type memoryRepo struct {
 
 // Repository
 type Repository interface {
-	AddGame(*logic.Game)
+	SetGame(*logic.Game)
 	Game(string) *logic.Game
 	Games() []*logic.Game
 	// DeleteGame()
@@ -27,7 +27,7 @@ type Repository interface {
 // Assert that memoryRepo implements the Repository interface.
 var _ Repository = &memoryRepo{}
 
-func (r *memoryRepo) AddGame(g *logic.Game) {
+func (r *memoryRepo) SetGame(g *logic.Game) {
 	r.AllGames[g.GameId] = g
 }
 

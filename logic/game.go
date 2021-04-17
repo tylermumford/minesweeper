@@ -5,36 +5,64 @@ import (
 	"strconv"
 )
 
+const defaultColCount = 9
+const defaultRowCount = 16
+
 type Game struct {
 	GameId  string
 	Players []*Player
 
-	RowCount int
 	ColCount int
+	RowCount int
 
-	Fields map[string]field
+	Fields map[string]*field
 }
 
 func NewGame() *Game {
 	g := Game{
 		GameId:   "G" + strconv.Itoa(rand.Intn(2000)),
-		Players:  make([]*Player, 2),
-		RowCount: 16,
-		ColCount: 9,
-		Fields:   make(map[string]field),
+		Players:  make([]*Player, 0, 2),
+		RowCount: defaultRowCount,
+		ColCount: defaultColCount,
+		Fields:   make(map[string]*field),
 	}
 	return &g
 }
 
-type field struct {
-	RowCount int
-	ColCount int
+func (g *Game) AddPlayer(p *Player) error {
+	g.Players = append(g.Players, p)
+	g.Fields[p.PlayerId] = NewField()
+	return nil
+}
 
+type field struct {
+	ColCount, RowCount int
+
+	// Squares holds squares in [x][y] order.
+	// It's a slice of columns, each of which is a slice of squares.
 	Squares [][]square
 }
 
+func NewField() *field {
+	f := &field{
+		ColCount: defaultColCount,
+		RowCount: defaultRowCount,
+		Squares:  make([][]square, 0, defaultColCount),
+	}
+	for x := 0; x < f.ColCount; x++ {
+		nextCol := make([]square, f.RowCount)
+		f.Squares = append(f.Squares, nextCol)
+		for y := 0; y < f.RowCount; y++ {
+			f.Squares[x][y].Coordinates = xyPair{x, y}
+		}
+	}
+	return f
+}
+
 type square struct {
-	Coordinates                             struct{ X, Y int }
+	Coordinates                             xyPair
 	IsMine, IsFlagged, IsOpened, IsRevealed bool
 	NumberOfMinesSurrounding                int
 }
+
+type xyPair struct{ X, Y int }

@@ -78,6 +78,10 @@ func (r *randomizer) next() bool {
 				break
 			}
 		}
+
+		rand.Shuffle(len(r.boolValues), func(i, j int) {
+			r.boolValues[i], r.boolValues[j] = r.boolValues[j], r.boolValues[i]
+		})
 	}
 
 	if r.index >= len(r.boolValues) {

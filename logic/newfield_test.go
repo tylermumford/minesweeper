@@ -33,16 +33,37 @@ func TestNewFieldMines(t *testing.T) {
 	f := NewField()
 
 	mineCount := 0
+
+	previousWasAMine := true
+	maxSubsequentMines := 0
+	subsequentMines := 0
+
 	for x := 0; x < defaultColCount; x++ {
 		for y := 0; y < defaultRowCount; y++ {
 			square := f.Squares[x][y]
+
 			if square.IsMine {
 				mineCount++
+
+				if previousWasAMine {
+					subsequentMines++
+					if subsequentMines > maxSubsequentMines {
+						maxSubsequentMines = subsequentMines
+					}
+				}
+
+				previousWasAMine = true
+			} else {
+				previousWasAMine = false
 			}
 		}
 	}
 
 	if mineCount != numberOfMinesToCreate {
 		t.Errorf("Expected field to have %d mines -- found %d", numberOfMinesToCreate, mineCount)
+	}
+
+	if numberOfMinesToCreate-maxSubsequentMines < 5 {
+		t.Errorf("Expected mines to be randomized, but found %d in a row", maxSubsequentMines)
 	}
 }

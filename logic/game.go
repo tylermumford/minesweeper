@@ -8,6 +8,8 @@ import (
 const defaultColCount = 9
 const defaultRowCount = 16
 
+const numberOfMinesToCreate = 41 // Roughly 28% of squares
+
 type Game struct {
 	GameId  string
 	Players []*Player
@@ -49,14 +51,42 @@ func NewField() *field {
 		RowCount: defaultRowCount,
 		Squares:  make([][]square, 0, defaultColCount),
 	}
+	rando := randomizer{}
 	for x := 0; x < f.ColCount; x++ {
 		nextCol := make([]square, f.RowCount)
 		f.Squares = append(f.Squares, nextCol)
 		for y := 0; y < f.RowCount; y++ {
 			f.Squares[x][y].Coordinates = xyPair{x, y}
+			f.Squares[x][y].IsMine = rando.next()
 		}
 	}
 	return f
+}
+
+type randomizer struct {
+	index      int
+	boolValues []bool
+}
+
+func (r *randomizer) next() bool {
+	if r.index == 0 {
+		r.boolValues = make([]bool, defaultColCount*defaultRowCount)
+		for i := range r.boolValues {
+			if i < numberOfMinesToCreate {
+				r.boolValues[i] = true
+			} else {
+				break
+			}
+		}
+	}
+
+	if r.index >= len(r.boolValues) {
+		panic("randomizer.next called too many times.")
+	}
+
+	result := r.boolValues[r.index]
+	r.index++
+	return result
 }
 
 type square struct {

@@ -14,12 +14,14 @@
 <div class="grid-minefield">
     {{range $yourField.Squares}}
     {{range .}}
-    <span class="
+    <button class="
         dib
-        bg-dark-blue
-        w1 h1
+        white bg-dark-blue
+        w2 h2
+        f3 tc
+        bn
         overflow-hidden
-        ">{{.Coordinates.X}},{{.Coordinates.Y}}</span>
+        ">{{.Coordinates.X}},{{.Coordinates.Y}}</button>
     {{end}}
     {{end}}
 </div>

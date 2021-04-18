@@ -11,6 +11,7 @@ func main() {
 
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
+	e.Use(middleware.Gzip())
 
 	e.Debug = true
 	preparePlayerId(e)

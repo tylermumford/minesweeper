@@ -29,10 +29,28 @@ func TestNewFieldCoordinates(t *testing.T) {
 	}
 }
 
-func TestNewFieldMines(t *testing.T) {
+func TestNewFieldHasMines(t *testing.T) {
 	f := NewField()
 
 	mineCount := 0
+
+	for x := 0; x < defaultColCount; x++ {
+		for y := 0; y < defaultRowCount; y++ {
+			square := f.Squares[x][y]
+
+			if square.IsMine {
+				mineCount++
+			}
+		}
+	}
+
+	if mineCount != numberOfMinesToCreate {
+		t.Errorf("Expected field to have %d mines -- found %d", numberOfMinesToCreate, mineCount)
+	}
+}
+
+func TestNewFieldIsShuffled(t *testing.T) {
+	f := NewField()
 
 	previousWasAMine := true
 	maxSubsequentMines := 0
@@ -43,8 +61,6 @@ func TestNewFieldMines(t *testing.T) {
 			square := f.Squares[x][y]
 
 			if square.IsMine {
-				mineCount++
-
 				if previousWasAMine {
 					subsequentMines++
 					if subsequentMines > maxSubsequentMines {
@@ -59,11 +75,33 @@ func TestNewFieldMines(t *testing.T) {
 		}
 	}
 
-	if mineCount != numberOfMinesToCreate {
-		t.Errorf("Expected field to have %d mines -- found %d", numberOfMinesToCreate, mineCount)
-	}
-
 	if numberOfMinesToCreate-maxSubsequentMines < 5 {
 		t.Errorf("Expected mines to be randomized, but found %d in a row", maxSubsequentMines)
 	}
+}
+
+func TestNewFieldSetsSurroundingCount(t *testing.T) {
+	f := NewField()
+
+	for x := 0; x < defaultColCount; x++ {
+		for y := 0; y < defaultRowCount; y++ {
+			sq := f.Squares[x][y]
+
+			foundSurrounding := 0
+			helperForEachSurroundingSquare(t, sq, f, func(examine square) {
+				if examine.IsMine {
+					foundSurrounding++
+				}
+			})
+
+			if sq.NumberOfMinesSurrounding != foundSurrounding {
+				t.Errorf("Expected a square to hold number %d, but found %d", foundSurrounding, sq.NumberOfMinesSurrounding)
+			}
+		}
+	}
+}
+
+func helperForEachSurroundingSquare(t *testing.T, s square, f *field, action func(square)) {
+	t.Helper()
+	forEachSurroundingSquare(s, f, action)
 }

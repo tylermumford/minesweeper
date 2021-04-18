@@ -16,12 +16,12 @@
     {{range .}}
     <button class="
         dib
-        bg-dark-blue {{if .IsMine}}red{{else}}white{{end}}
+        bg-dark-blue {{if .IsMine}}black{{else}}white{{end}}
         w2 h2
         f3 tc
         bn
         overflow-hidden
-        ">{{.Coordinates.X}},{{.Coordinates.Y}}</button>
+        ">{{.NumberOfMinesSurrounding}}</button>
     {{end}}
     {{end}}
 </div>

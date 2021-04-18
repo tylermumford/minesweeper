@@ -45,7 +45,7 @@ func TestNewFieldHasMines(t *testing.T) {
 	}
 
 	if mineCount != numberOfMinesToCreate {
-		t.Errorf("Expected field to have %d mines -- found %d", numberOfMinesToCreate, mineCount)
+		t.Errorf("Expected field to have %d mines, but found %d", numberOfMinesToCreate, mineCount)
 	}
 }
 

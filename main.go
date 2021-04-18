@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+
 	"example.com/minesweeper/repo"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -22,5 +24,14 @@ func main() {
 
 	prepareHandlers(e)
 
-	e.Logger.Fatal(e.Start(":1323"))
+	e.Logger.Fatal(e.Start(choosePort()))
+}
+
+func choosePort() string {
+	envPort := os.Getenv("PORT")
+	if envPort == "" {
+		return ":1323"
+	}
+
+	return ":" + envPort
 }

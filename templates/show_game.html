@@ -1,0 +1,38 @@
+{{template "page_header.html" .}}
+
+{{if not .game}}
+
+<p>Sorry, that game could not be found.</p>
+
+{{template "list_games.html" .}}
+
+{{else}}
+
+{{$yourField := index .game.Fields .player_id}}
+<turbo-frame id="show_game">
+<p>Playing Game {{.game.GameId}}</p>
+
+<div class="grid-minefield">
+    {{range $yourField.Squares}}
+    {{range .}}
+    <form action="/game/{{$.game.GameId}}/select_square" method="POST">
+    <button type="submit"
+        class="
+        dib
+        bg-dark-blue {{if .IsOpened}}green{{else if .IsMine}}black{{else}}white{{end}}
+        w2 h2
+        f3 tc
+        bn
+        overflow-hidden
+        ">{{.NumberOfMinesSurrounding}}</button>
+    <input type="hidden" name="x" value="{{.Coordinates.X}}">
+    <input type="hidden" name="y" value="{{.Coordinates.Y}}">
+    </form>
+    {{end}}
+    {{end}}
+</div>
+</turbo-frame>
+
+{{end}}
+
+{{template "page_footer.html" .}}

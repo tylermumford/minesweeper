@@ -1,0 +1,20 @@
+{{define "summarize_players"}}
+{{- /* https://stackoverflow.com/a/21305933/1076188 */ -}}
+with {{range $i, $player := .Players}}
+{{- if $i}},{{end}}
+{{.Name -}}
+{{else}}0 players{{end}}
+{{end}}
+
+<h2 class="f5">Active game rooms:</h2>
+<form action="/game" method="POST">
+    <button type="submit">Start new game</button>
+</form>
+<ul>
+    {{range .games}}
+    <li><a href="/game/{{.GameId}}" class="white">{{.GameId}}</a> {{template "summarize_players" .}}</li>
+    {{end}}
+</ul>
+{{if not .games}}
+<p>No games available.</p>
+{{end}}

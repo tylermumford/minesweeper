@@ -1,3 +1,6 @@
+// Package logic contains types and functions for modeling games of
+// minesweeper wherein several players play on interdependent but
+// distinct minefields.
 package logic
 
 import (
@@ -17,6 +20,7 @@ type Game struct {
 	ColCount int
 	RowCount int
 
+	// Fields is a map of Player IDs to fields.
 	Fields map[string]*field
 }
 
@@ -35,4 +39,11 @@ func (g *Game) AddPlayer(p *Player) error {
 	g.Players = append(g.Players, p)
 	g.Fields[p.PlayerId] = NewField()
 	return nil
+}
+
+func (g *Game) SelectSquare(p Player, x, y int) {
+	f := g.Fields[p.PlayerId]
+	sq := &f.Squares[x][y]
+
+	sq.IsOpened = true
 }

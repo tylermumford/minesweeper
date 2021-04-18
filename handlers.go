@@ -1,6 +1,8 @@
 package main
 
 import (
+	"strconv"
+
 	"example.com/minesweeper/logic"
 	"example.com/minesweeper/repo"
 	"github.com/labstack/echo/v4"
@@ -19,6 +21,8 @@ func prepareHandlers(e *echo.Echo) {
 
 	e.GET("/game/:game_id", getGame)
 	e.POST("/game", postGame)
+	e.POST("/game/:game_id/select_square", postSelectSquare)
+
 }
 
 // Handlers: 👇
@@ -63,6 +67,23 @@ func postGame(c echo.Context) error {
 	g.AddPlayer(extractPlayer(c))
 	r := repo.ExtractRepository(c)
 	r.SetGame(g)
+	return c.Redirect(303, "/game/"+g.GameId)
+}
+
+func postSelectSquare(c echo.Context) error {
+	r := repo.ExtractRepository(c)
+	p := extractPlayer(c)
+	g := r.Game(c.Param("game_id"))
+	if g == nil {
+		return echo.NewHTTPError(404, "Game not found.")
+	}
+
+	x, y := c.FormValue("x"), c.FormValue("y")
+	xInt, _ := strconv.Atoi(x)
+	yInt, _ := strconv.Atoi(y)
+
+	g.SelectSquare(*p, xInt, yInt)
+
 	return c.Redirect(303, "/game/"+g.GameId)
 }
 

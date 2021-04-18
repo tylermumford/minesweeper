@@ -12,6 +12,7 @@ import (
 
 func prepareHandlers(e *echo.Echo) {
 	e.GET("/", getIndex)
+	e.GET("/favicon.ico", getFavicon)
 
 	e.GET("/gameplay", getGameplay)
 	e.GET("/privacy", getPrivacy)
@@ -29,6 +30,10 @@ func prepareHandlers(e *echo.Echo) {
 
 func getIndex(c echo.Context) error {
 	return c.Render(200, "index.html", newBucketTitled(c, "Home"))
+}
+
+func getFavicon(c echo.Context) error {
+	return c.NoContent(204)
 }
 
 func getPrivacy(c echo.Context) error {

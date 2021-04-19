@@ -66,7 +66,9 @@ func getGame(c echo.Context) error {
 	b["game"] = g
 
 	// Auto-join game
-	g.AddPlayer(extractPlayer(c))
+	if g != nil {
+		g.AddPlayer(extractPlayer(c))
+	}
 
 	return c.Render(200, "show_game.html", b)
 }

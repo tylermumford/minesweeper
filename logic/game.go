@@ -58,7 +58,7 @@ func revealSquares(g *Game, x, y int) {
 		s := &g.Fields[i].Squares[x][y]
 		linkedSquares = append(linkedSquares, s)
 
-		if !(s.IsOpened || s.IsFlagged || s.IsMine) {
+		if !(s.IsOpened || s.IsFlagged) {
 			// Can't reveal any squares. Done.
 			return
 		}

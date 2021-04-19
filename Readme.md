@@ -1,14 +1,13 @@
 # Multiplayer Minesweeper
 
-This is a side project for fun. It's almost playable again.
+This is a side project for fun. It's just barely playable again.
 
 * Use `go build` to build the app.
 * Use `go run .` to build and run.
 * I use `watchexec -r go run .` to restart the app when files change.
 * Use `go test` in one of the directories to run `_test.go` unit tests.
 
-
-It's currently hosted on a [free Heroku dyno](https://aqueous-atoll-41713.herokuapp.com/).
+It's currently [hosted on a free Heroku dyno](https://aqueous-atoll-41713.herokuapp.com/).
 
 # How is the multiplayer going to work?
 

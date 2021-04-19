@@ -64,6 +64,10 @@ func getGame(c echo.Context) error {
 	r := repo.ExtractRepository(c)
 	g := r.Game(c.Param("game_id"))
 	b["game"] = g
+
+	// Auto-join game
+	g.AddPlayer(extractPlayer(c))
+
 	return c.Render(200, "show_game.html", b)
 }
 

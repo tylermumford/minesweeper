@@ -35,10 +35,13 @@ func NewGame() *Game {
 	return &g
 }
 
-func (g *Game) AddPlayer(p *Player) error {
-	g.Players = append(g.Players, p)
-	g.Fields[p.PlayerId] = NewField()
-	return nil
+// AddPlayer adds a player to a game and creates a new field for them.
+// If the player is already in the game, this does nothing and returns no error.
+func (g *Game) AddPlayer(p *Player) {
+	if g.Fields[p.PlayerId] == nil {
+		g.Players = append(g.Players, p)
+		g.Fields[p.PlayerId] = NewField()
+	}
 }
 
 func (g *Game) SelectSquare(p Player, x, y int) {
@@ -46,4 +49,22 @@ func (g *Game) SelectSquare(p Player, x, y int) {
 	sq := &f.Squares[x][y]
 
 	sq.IsOpened = true
+	revealSquares(g, x, y)
+}
+
+func revealSquares(g *Game, x, y int) {
+	linkedSquares := make([]*square, 0, len(g.Fields))
+	for i := range g.Fields {
+		s := &g.Fields[i].Squares[x][y]
+		linkedSquares = append(linkedSquares, s)
+
+		if !(s.IsOpened || s.IsFlagged || s.IsMine) {
+			// Can't reveal any squares. Done.
+			return
+		}
+	}
+
+	for _, s := range linkedSquares {
+		s.IsRevealed = true
+	}
 }

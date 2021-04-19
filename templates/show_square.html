@@ -1,8 +1,15 @@
 <button type="submit" class="
     dib
-    bg-blue {{if .IsOpened}}green{{else if .IsMine}}black{{else}}white{{end}}
+    white {{if .IsOpened}}bg-dark-blue{{else}}bg-blue{{end}}
     w2 h2
     f3 tc
     bn
     overflow-hidden
-    ">{{.NumberOfMinesSurrounding}}</button>
+    ">{{if .IsRevealed}}
+        {{if not .IsMine}}
+            {{.NumberOfMinesSurrounding}}
+        {{else}}
+            ❌
+        {{end}}
+    {{end}}
+</button>

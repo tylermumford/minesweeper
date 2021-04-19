@@ -16,15 +16,7 @@
     {{range $yourField.Squares}}
     {{range .}}
     <form action="/game/{{$.game.GameId}}/select_square" method="POST">
-    <button type="submit"
-        class="
-        dib
-        bg-dark-blue {{if .IsOpened}}green{{else if .IsMine}}black{{else}}white{{end}}
-        w2 h2
-        f3 tc
-        bn
-        overflow-hidden
-        ">{{.NumberOfMinesSurrounding}}</button>
+    {{template "show_square.html" .}}
     <input type="hidden" name="x" value="{{.Coordinates.X}}">
     <input type="hidden" name="y" value="{{.Coordinates.Y}}">
     </form>

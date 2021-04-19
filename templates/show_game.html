@@ -11,6 +11,7 @@
 {{$yourField := index .game.Fields .player_id}}
 <turbo-frame id="show_game">
 <p>Playing Game {{.game.GameId}}</p>
+<p class="f6">Work together in the same area of the minefield to reveal information to everyone.</p>
 
 <div class="minefield-grid-9x16">
     {{range $yourField.Squares}}

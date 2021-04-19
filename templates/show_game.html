@@ -12,7 +12,7 @@
 <turbo-frame id="show_game">
 <p>Playing Game {{.game.GameId}}</p>
 
-<div class="grid-minefield">
+<div class="minefield-grid-9x16">
     {{range $yourField.Squares}}
     {{range .}}
     <form action="/game/{{$.game.GameId}}/select_square" method="POST">

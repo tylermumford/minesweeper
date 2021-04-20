@@ -6,8 +6,11 @@ function registerControllers() {
 }
 
 class ButtonController extends Controller {
-    connect() {
-        console.log("Connected!");
+    static get targets() { return ['flagSubmit']; }
+
+    setFlag(event) {
+        event.preventDefault();
+        this.flagSubmitTarget?.click();
     }
 }
 

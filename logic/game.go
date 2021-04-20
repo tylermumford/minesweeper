@@ -52,6 +52,14 @@ func (g *Game) OpenSquare(p Player, x, y int) {
 	revealSquares(g, x, y)
 }
 
+func (g *Game) ToggleFlaggedSquare(p Player, x, y int) {
+	f := g.Fields[p.PlayerId]
+	sq := &f.Squares[x][y]
+
+	sq.IsFlagged = true
+	revealSquares(g, x, y)
+}
+
 func revealSquares(g *Game, x, y int) {
 	linkedSquares := make([]*square, 0, len(g.Fields))
 	for i := range g.Fields {

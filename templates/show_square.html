@@ -1,16 +1,32 @@
-<button type="submit" class="
-    dib
-    white {{if .IsOpened}}bg-dark-blue{{else}}bg-blue{{end}}
-    w2 h2
-    f3 tc
-    bn
-    overflow-hidden
-    "
-    data-controller="button">{{if .IsRevealed}}
-        {{if not .IsMine}}
-            {{.NumberOfMinesSurrounding}}
-        {{else}}
-            ❌
+<div
+    data-controller="button"
+    data-action="contextmenu->button#setFlag">
+    <button
+        type="submit"
+        class="
+        dib
+        {{if .IsOpened}}bg-dark-blue{{else}}bg-blue{{end}}
+        {{if and .IsMine .IsRevealed}}red{{else if .IsFlagged}}yellow{{else}}white{{end}}
+        w2 h2
+        f3 tc
+        bn
+        overflow-hidden
+        "
+        name="player_action"
+        value="open">
+        {{if .IsFlagged}}⚠︎
+        {{else if and .IsMine .IsOpened}}☠︎
+        {{else if .IsRevealed}}{{.NumberOfMinesSurrounding}}
         {{end}}
-    {{end}}
-</button>
+    </button>
+
+    <button
+        type="submit"
+        name="player_action"
+        value="toggle_flag"
+        class="dn"
+        data-button-target="flagSubmit">
+        Flag the square
+    </button>
+
+</div>

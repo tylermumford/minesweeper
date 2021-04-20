@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"strconv"
 
 	"example.com/minesweeper/logic"
@@ -93,7 +94,16 @@ func postPlayerAction(c echo.Context) error {
 	xInt, _ := strconv.Atoi(x)
 	yInt, _ := strconv.Atoi(y)
 
-	g.OpenSquare(*p, xInt, yInt)
+	action := c.FormValue("player_action")
+
+	switch action {
+	case "open":
+		g.OpenSquare(*p, xInt, yInt)
+	case "toggle_flag":
+		g.ToggleFlaggedSquare(*p, xInt, yInt)
+	default:
+		return fmt.Errorf("unsupported player action: \"%s\"", action)
+	}
 
 	return c.Redirect(303, "/game/"+g.GameId)
 }

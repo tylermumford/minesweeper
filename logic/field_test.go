@@ -88,7 +88,7 @@ func TestNewFieldSetsSurroundingCount(t *testing.T) {
 			sq := f.Squares[x][y]
 
 			foundSurrounding := 0
-			helperForEachSurroundingSquare(t, sq, f, func(examine square) {
+			helperForEachSurroundingSquare(t, sq, f, func(examine *square) {
 				if examine.IsMine {
 					foundSurrounding++
 				}
@@ -101,7 +101,7 @@ func TestNewFieldSetsSurroundingCount(t *testing.T) {
 	}
 }
 
-func helperForEachSurroundingSquare(t *testing.T, s square, f *field, action func(square)) {
+func helperForEachSurroundingSquare(t *testing.T, s square, f *field, action func(*square)) {
 	t.Helper()
 	forEachSurroundingSquare(s, f, action)
 }

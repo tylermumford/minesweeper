@@ -26,7 +26,7 @@ func NewField() *field {
 
 	forEachSquare(f, func(sq *square) {
 		count := 0
-		forEachSurroundingSquare(*sq, f, func(neighbor square) {
+		forEachSurroundingSquare(*sq, f, func(neighbor *square) {
 			if neighbor.IsMine {
 				count++
 			}
@@ -45,7 +45,7 @@ func forEachSquare(f *field, action func(*square)) {
 	}
 }
 
-func forEachSurroundingSquare(s square, f *field, action func(square)) {
+func forEachSurroundingSquare(s square, f *field, action func(*square)) {
 	matrix := []xyPair{
 		{X: -1, Y: -1},
 		{X: 0, Y: -1},
@@ -62,7 +62,7 @@ func forEachSurroundingSquare(s square, f *field, action func(square)) {
 		yInBounds := lookupY >= 0 && lookupY < f.RowCount
 
 		if xInBounds && yInBounds {
-			action(f.Squares[lookupX][lookupY])
+			action(&f.Squares[lookupX][lookupY])
 		}
 	}
 }

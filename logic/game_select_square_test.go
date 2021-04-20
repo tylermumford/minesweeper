@@ -2,7 +2,7 @@ package logic
 
 import "testing"
 
-func TestSelectSquareSetsOpened(t *testing.T) {
+func TestOpenSquareSetsOpened(t *testing.T) {
 	g := NewGame()
 	p := Player{
 		PlayerId: "P5587",
@@ -10,10 +10,10 @@ func TestSelectSquareSetsOpened(t *testing.T) {
 	}
 	g.AddPlayer(&p)
 
-	g.SelectSquare(p, 4, 4)
+	g.OpenSquare(p, 4, 4)
 
 	sq := g.Fields[p.PlayerId].Squares[4][4]
 	if sq.IsOpened != true {
-		t.Error("Expected SelectSquare to set IsOpened = true")
+		t.Error("Expected OpenSquare to set IsOpened = true")
 	}
 }

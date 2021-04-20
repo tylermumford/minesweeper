@@ -8,7 +8,7 @@
 
 {{else}}
 
-{{$yourField := index .game.Fields .player_id}}
+{{$yourField := index .game.Fields .player.PlayerId}}
 <turbo-frame id="show_game">
 <p>Playing Game {{.game.GameId}}</p>
 <p class="f6">Work together in the same area of the minefield to reveal information to everyone.</p>

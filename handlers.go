@@ -108,10 +108,9 @@ func newBucket(c echo.Context) bucket {
 	r := repo.ExtractRepository(c)
 	p := extractPlayer(c)
 	return bucket{
-		"title":       defaultTitle,
-		"player_id":   p.PlayerId,
-		"player_name": p.Name,
-		"games":       r.Games(),
+		"title":  defaultTitle,
+		"player": p,
+		"games":  r.Games(),
 	}
 }
 

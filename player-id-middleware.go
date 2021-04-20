@@ -24,8 +24,10 @@ func assignPlayerId(next echo.HandlerFunc) echo.HandlerFunc {
 			cookie = &http.Cookie{
 				Name:     player_id,
 				Value:    id,
-				HttpOnly: true,
+				Path:     "/",
+				MaxAge:   0,
 				Secure:   false,
+				HttpOnly: true,
 			}
 			c.SetCookie(cookie)
 		}

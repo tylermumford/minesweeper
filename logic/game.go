@@ -48,6 +48,10 @@ func (g *Game) OpenSquare(p Player, x, y int) {
 	f := g.Fields[p.PlayerId]
 	sq := &f.Squares[x][y]
 
+	if sq.IsFlagged {
+		return
+	}
+
 	sq.IsOpened = true
 	revealSquares(g, x, y)
 }
@@ -56,7 +60,12 @@ func (g *Game) ToggleFlaggedSquare(p Player, x, y int) {
 	f := g.Fields[p.PlayerId]
 	sq := &f.Squares[x][y]
 
-	sq.IsFlagged = true
+	if sq.IsOpened {
+		return
+	}
+
+	sq.IsFlagged = !sq.IsFlagged
+	sq.IsRevealed = false
 	revealSquares(g, x, y)
 }
 

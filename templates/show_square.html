@@ -5,7 +5,8 @@
     f3 tc
     bn
     overflow-hidden
-    ">{{if .IsRevealed}}
+    "
+    data-controller="button">{{if .IsRevealed}}
         {{if not .IsMine}}
             {{.NumberOfMinesSurrounding}}
         {{else}}

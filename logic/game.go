@@ -45,15 +45,34 @@ func (g *Game) AddPlayer(p *Player) {
 }
 
 func (g *Game) OpenSquare(p Player, x, y int) {
+	visited := make(map[*square]bool)
 	f := g.Fields[p.PlayerId]
-	sq := &f.Squares[x][y]
 
-	if sq.IsFlagged {
-		return
+	var algorithm func(g *Game, p Player, x, y int)
+	algorithm = func(g *Game, p Player, x, y int) {
+		sq := &f.Squares[x][y]
+
+		if sq.IsFlagged {
+			return
+		}
+
+		sq.IsOpened = true
+		g.revealSquares(x, y)
+
+		visited[sq] = true
+
+		if sq.IsRevealed && !sq.IsMine && sq.NumberOfMinesSurrounding == 0 {
+			forEachSurroundingSquare(*sq, f, func(neighbor *square) {
+				if visited[neighbor] {
+					return
+				}
+				visited[neighbor] = true
+				algorithm(g, p, neighbor.Coordinates.X, neighbor.Coordinates.Y)
+			})
+		}
 	}
 
-	sq.IsOpened = true
-	g.revealSquares(x, y)
+	algorithm(g, p, x, y)
 }
 
 func (g *Game) ToggleFlaggedSquare(p Player, x, y int) {

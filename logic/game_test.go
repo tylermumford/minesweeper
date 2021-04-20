@@ -17,11 +17,7 @@ func TestAddPlayer(t *testing.T) {
 		Name:     "Gopher",
 	}
 
-	err := g.AddPlayer(&p)
-
-	if err != nil {
-		t.Error(err)
-	}
+	g.AddPlayer(&p)
 
 	if g.Players[0] != &p {
 		t.Errorf("Expected player to be player 0 -- got wrong address")

@@ -22,7 +22,7 @@ func prepareHandlers(e *echo.Echo) {
 
 	e.GET("/game/:game_id", getGame)
 	e.POST("/game", postGame)
-	e.POST("/game/:game_id/select_square", postSelectSquare)
+	e.POST("/game/:game_id/player_action", postPlayerAction)
 
 }
 
@@ -81,7 +81,7 @@ func postGame(c echo.Context) error {
 	return c.Redirect(303, "/game/"+g.GameId)
 }
 
-func postSelectSquare(c echo.Context) error {
+func postPlayerAction(c echo.Context) error {
 	r := repo.ExtractRepository(c)
 	p := extractPlayer(c)
 	g := r.Game(c.Param("game_id"))
@@ -93,7 +93,7 @@ func postSelectSquare(c echo.Context) error {
 	xInt, _ := strconv.Atoi(x)
 	yInt, _ := strconv.Atoi(y)
 
-	g.SelectSquare(*p, xInt, yInt)
+	g.OpenSquare(*p, xInt, yInt)
 
 	return c.Redirect(303, "/game/"+g.GameId)
 }

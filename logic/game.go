@@ -44,7 +44,7 @@ func (g *Game) AddPlayer(p *Player) {
 	}
 }
 
-func (g *Game) SelectSquare(p Player, x, y int) {
+func (g *Game) OpenSquare(p Player, x, y int) {
 	f := g.Fields[p.PlayerId]
 	sq := &f.Squares[x][y]
 

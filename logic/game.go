@@ -8,8 +8,8 @@ import (
 	"strconv"
 )
 
-const defaultColCount = 9
-const defaultRowCount = 16
+const defaultColCount = 18
+const defaultRowCount = 12
 
 const numberOfMinesToCreate = 35 // Roughly 24% of squares
 

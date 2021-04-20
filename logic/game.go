@@ -11,7 +11,7 @@ import (
 const defaultColCount = 9
 const defaultRowCount = 16
 
-const numberOfMinesToCreate = 41 // Roughly 28% of squares
+const numberOfMinesToCreate = 35 // Roughly 24% of squares
 
 type Game struct {
 	GameId  string

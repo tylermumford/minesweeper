@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"net/http"
 	"strconv"
 
 	"example.com/minesweeper/logic"
@@ -31,7 +30,6 @@ func prepareHandlers(e *echo.Echo) {
 // Handlers: 👇
 
 func getIndex(c echo.Context) error {
-	fmt.Printf("Protocol: %s\n", c.Request().Proto)
 	return c.Render(200, "index.html", newBucketTitled(c, "Home"))
 }
 
@@ -107,13 +105,7 @@ func postPlayerAction(c echo.Context) error {
 		return fmt.Errorf("unsupported player action: \"%s\"", action)
 	}
 
-	nextUrl := "/game/" + g.GameId
-
-	if pusher, ok := c.Response().Writer.(http.Pusher); ok {
-		pusher.Push(nextUrl, nil)
-	}
-
-	return c.Redirect(303, nextUrl)
+	return c.Redirect(303, "/game/"+g.GameId)
 }
 
 // Helpers and misc. declarations 👇

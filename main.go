@@ -6,6 +6,7 @@ import (
 	"example.com/minesweeper/repo"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"golang.org/x/crypto/acme/autocert"
 )
 
 func main() {
@@ -24,7 +25,9 @@ func main() {
 
 	prepareHandlers(e)
 
-	e.Logger.Fatal(e.Start(choosePort()))
+	e.AutoTLSManager.Cache = autocert.DirCache("/var/www/.cert_cache")
+
+	e.Logger.Fatal(e.StartAutoTLS(choosePort()))
 }
 
 func choosePort() string {

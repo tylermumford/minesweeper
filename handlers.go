@@ -61,6 +61,10 @@ func postPlayerName(c echo.Context) error {
 }
 
 func getGame(c echo.Context) error {
+	return getGameWithStatus(200, c)
+}
+
+func getGameWithStatus(status int, c echo.Context) error {
 	b := newBucket(c)
 	r := repo.ExtractRepository(c)
 	g := r.Game(c.Param("game_id"))
@@ -105,7 +109,8 @@ func postPlayerAction(c echo.Context) error {
 		return fmt.Errorf("unsupported player action: \"%s\"", action)
 	}
 
-	return c.Redirect(303, "/game/"+g.GameId)
+	// Hack-ish status code to get Turbo to re-render immediately.
+	return getGameWithStatus(555, c)
 }
 
 // Helpers and misc. declarations 👇

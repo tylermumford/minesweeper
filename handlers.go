@@ -21,10 +21,10 @@ func prepareHandlers(e *echo.Echo) {
 	e.GET("/player_name", getPlayerName)
 	e.POST("/player_name", postPlayerName)
 
+	e.HEAD("/game/:game_id", getGameHeaders)
 	e.GET("/game/:game_id", getGame)
 	e.POST("/game", postGame)
 	e.POST("/game/:game_id/player_action", postPlayerAction)
-
 }
 
 // Handlers: 👇
@@ -71,7 +71,24 @@ func getGame(c echo.Context) error {
 		g.AddPlayer(extractPlayer(c))
 	}
 
+	setGameStateHeader(g, c)
+
 	return c.Render(200, "show_game.html", b)
+}
+
+func getGameHeaders(c echo.Context) error {
+	r := repo.ExtractRepository(c)
+	g := r.Game(c.Param("game_id"))
+
+	setGameStateHeader(g, c)
+
+	return c.NoContent(200)
+}
+
+func setGameStateHeader(g *logic.Game, c echo.Context) {
+	hash := hashGame(g)
+
+	c.Response().Header().Set("X-Minesweeper-Game-State", hash)
 }
 
 func postGame(c echo.Context) error {

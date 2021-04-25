@@ -20,25 +20,55 @@ class ButtonController extends Controller {
 
 class RefresherController extends Controller {
     polling
+    timeStartedPolling
+    lastSeenState
 
-    connect() {
-        this.element.addEventListener('click', () => this.maybeReload())
+    async connect() {
+        this.element.addEventListener('click', () => this.reload())
 
-        this.startPolling()
+        await this.getFirstState();
+        this.startPolling();
+    }
+
+    async getFirstState() {
+        const response = await fetch(document.location.href, { method: 'HEAD' });
+
+        const stateHeader = response.headers.get('X-Minesweeper-Game-State');
+        if (response.ok && stateHeader) {
+            this.lastSeenState = stateHeader;
+        }
+    }
+
+    startPolling() {
+        this.timeStartedPolling = new Date();
+
+        this.polling = setInterval(async () => {
+            await this.maybeReload()
+        }, 3000);
+    }
+
+    async maybeReload() {
+        const response = await fetch(document.location.href, {method: 'HEAD'});
+
+        const stateHeader = response.headers.get('X-Minesweeper-Game-State');
+        console.log('last seen:', this.lastSeenState);
+        console.log('fetched:', stateHeader);
+
+        if (!response.ok || !stateHeader) {
+            return;
+        }
+
+        if (stateHeader !== this.lastSeenState) {
+            this.reload();
+        }
+    }
+
+    reload() {
+        Turbo.visit(document.location.href, { action: 'replace' });
     }
 
     disconnect() {
         clearInterval(this.polling)
-    }
-
-    maybeReload() {
-        Turbo.visit(document.location.href, { action: 'replace' })
-    }
-
-    startPolling() {
-        this.polling = setInterval(() => {
-            this.maybeReload()
-        }, 3000);
     }
 }
 

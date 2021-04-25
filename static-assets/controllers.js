@@ -44,6 +44,11 @@ class RefresherController extends Controller {
 
         this.polling = setInterval(async () => {
             await this.maybeReload()
+
+            const maxPollingTime = 5 * 60 * 1000;
+            if (new Date() - this.timeStartedPolling > maxPollingTime) {
+                clearInterval(this.polling);
+            }
         }, 3000);
     }
 
@@ -51,9 +56,6 @@ class RefresherController extends Controller {
         const response = await fetch(document.location.href, {method: 'HEAD'});
 
         const stateHeader = response.headers.get('X-Minesweeper-Game-State');
-        console.log('last seen:', this.lastSeenState);
-        console.log('fetched:', stateHeader);
-
         if (!response.ok || !stateHeader) {
             return;
         }

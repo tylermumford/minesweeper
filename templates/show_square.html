@@ -6,7 +6,7 @@
         class="
         dib
         {{if .IsOpened}}bg-dark-blue{{else}}bg-blue{{end}}
-        {{if .IsFlagged}}yellow{{else if and .IsMine .IsRevealed}}red{{else if eq .NumberOfMinesSurrounding 0}}blue{{else}}white{{end}}
+        {{if .IsFlagged}}yellow{{else if and .IsMine .IsOpened}}red{{else if eq .NumberOfMinesSurrounding 0}}blue{{else}}white{{end}}
         w2 h2
         f3 tc
         bn

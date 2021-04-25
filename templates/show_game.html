@@ -10,8 +10,17 @@
 
 {{$yourField := index .game.Fields .player.PlayerId}}
 <turbo-frame id="show_game">
-<p>Playing Game {{.game.GameId}} - <button data-controller="refresher">Reload</button></p>
-<p class="f6">Work together in the same area of the minefield to reveal information to everyone.</p>
+<div>
+    <p class="fl">Playing Game {{.game.GameId}} - <button data-controller="refresher">Reload</button></p>
+    {{if ge (len .game.Players) 2}}
+    <ul class="fr">
+        {{range .game.Players}}
+        <li>{{if .Name}}{{.Name}}{{else}}Anonymous{{end}}</li>
+        {{end}}
+    </ul>
+    {{end}}
+</div>
+<p class="f6 cb">Work together in the same area of the minefield to reveal information to everyone.</p>
 
 <div class="minefield-grid-9x16">
     {{range $yourField.Squares}}

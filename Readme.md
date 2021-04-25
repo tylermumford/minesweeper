@@ -6,8 +6,9 @@ This is a side project for fun. It's just barely playable again.
 * Use `go run .` to build and run.
 * I use `watchexec -r go run .` to restart the app when files change.
 * Use `go test` in one of the directories to run `_test.go` unit tests.
+* Use `git push` on the `master` branch to auto-deploy.
 
-It's currently [hosted on a free Heroku dyno](https://aqueous-atoll-41713.herokuapp.com/).
+It's currently [hosted](https://minesweeper-pzkhz.ondigitalocean.app/) on DigitalOcean.
 
 # How is the multiplayer going to work?
 

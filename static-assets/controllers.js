@@ -22,7 +22,7 @@ class RefresherController extends Controller {
     polling
 
     connect() {
-        this.element.addEventListener('click', () => this.reload())
+        this.element.addEventListener('click', () => this.maybeReload())
 
         this.startPolling()
     }
@@ -31,13 +31,13 @@ class RefresherController extends Controller {
         clearInterval(this.polling)
     }
 
-    reload() {
+    maybeReload() {
         Turbo.visit(document.location.href, { action: 'replace' })
     }
 
     startPolling() {
         this.polling = setInterval(() => {
-            this.reload()
+            this.maybeReload()
         }, 3000);
     }
 }

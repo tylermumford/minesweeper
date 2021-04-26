@@ -15,7 +15,7 @@
     {{if ge (len .game.Players) 2}}
     <ul class="fr">
         {{range .game.Players}}
-        <li>{{if .Name}}{{.Name}}{{else}}Anonymous{{end}}</li>
+        <li>{{if .Name}}{{.Name}}{{else}}{{.PlayerId}}{{end}}</li>
         {{end}}
     </ul>
     {{end}}

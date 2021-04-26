@@ -7,10 +7,7 @@
 {{end}}
 
 <h2 class="f5">Active game rooms:</h2>
-<form action="/game" method="POST">
-    <button type="submit">Start new game</button>
-</form>
-<ul>
+<ul class="max-height-half-viewport overflow-auto">
     {{range .games}}
     <li>Game <a href="/game/{{.GameId}}" class="white">{{.GameId}}</a> with {{template "summarize_players" .}}</li>
     {{end}}
@@ -18,3 +15,7 @@
 {{if not .games}}
 <p>No games available.</p>
 {{end}}
+
+<form action="/game" method="POST">
+    <button type="submit">Start new game</button>
+</form>

@@ -11,7 +11,7 @@
 {{$yourField := index .game.Fields .player.PlayerId}}
 <turbo-frame id="show_game">
 <div>
-    <p class="fl">Playing Game {{.game.GameId}} - <button data-controller="refresher">Reload</button></p>
+    <p class="fl">Playing Game {{.game.GameId}}</p>
     {{if ge (len .game.Players) 2}}
     <ul class="fr">
         {{range .game.Players}}

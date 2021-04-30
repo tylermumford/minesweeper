@@ -2,7 +2,10 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"strconv"
+	"strings"
+	"time"
 
 	"example.com/minesweeper/logic"
 	"example.com/minesweeper/repo"
@@ -25,6 +28,8 @@ func prepareHandlers(e *echo.Echo) {
 	e.GET("/game/:game_id", getGame)
 	e.POST("/game", postGame)
 	e.POST("/game/:game_id/player_action", postPlayerAction)
+
+	e.GET("/game/:game_id/stream", getGameStream)
 }
 
 // Handlers: 👇
@@ -123,6 +128,47 @@ func postPlayerAction(c echo.Context) error {
 	}
 
 	return getGame(c)
+}
+
+func getGameStream(c echo.Context) error {
+	c.Response().Header().Set(echo.HeaderContentType, "text/event-stream")
+	c.Response().WriteHeader(http.StatusOK)
+
+	b := newBucket(c)
+	r := repo.ExtractRepository(c)
+	g := r.Game(c.Param("game_id"))
+	b["game"] = g
+
+	/*
+		It works! And it's pretty smooth.
+		There's some kind of race condition where the game connects to
+		two streams or something, and one of them sends nil games.
+		This is a pretty simple implementation. Possible improvements:
+		- Hash the game and don't render it unless needed.
+		- Check more often than every 3 seconds.
+		- Extend the loop limit after changes
+		- Properly use show_game and show_game_inner
+		- Use a goroutine to make sure this isn't blocking? Maybe not needed.
+	*/
+
+	// lastHash := hashGame(g)
+	buffer := strings.Builder{}
+
+	for i := 1; i < 100; i++ {
+		c.Echo().Renderer.Render(&buffer, "show_game_inner.html", b, c)
+		renderedGame := buffer.String()
+		prefixedGame := strings.ReplaceAll(renderedGame, "\n", "\ndata: ")
+
+		fmt.Fprintf(c.Response(), `data: <turbo-stream action="update" target="show_game"><template>%s</template></turbo-stream>%s`, prefixedGame, "\n\n")
+		c.Response().Flush()
+		buffer.Reset()
+
+		time.Sleep(3 * time.Second)
+	}
+
+	c.Response().WriteHeader(http.StatusNoContent)
+
+	return nil
 }
 
 // Helpers and misc. declarations 👇

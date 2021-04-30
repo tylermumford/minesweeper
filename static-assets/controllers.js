@@ -6,6 +6,7 @@ const Controller = Stimulus.Controller;
 
 function registerControllers() {
     application.register("button", ButtonController);
+    application.register("game-stream", GameStreamController);
 }
 
 class ButtonController extends Controller {
@@ -14,6 +15,15 @@ class ButtonController extends Controller {
     setFlag(event) {
         event.preventDefault();
         this.flagSubmitTarget?.click();
+    }
+}
+
+class GameStreamController extends Controller {
+    connect() {
+        console.log("Connected", this.element);
+
+        const connection = new EventSource(document.location.href + "/stream");
+        Turbo.connectStreamSource(connection)
     }
 }
 

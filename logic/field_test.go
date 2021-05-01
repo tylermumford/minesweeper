@@ -47,6 +47,10 @@ func TestNewFieldHasMines(t *testing.T) {
 	if mineCount != numberOfMinesToCreate {
 		t.Errorf("Expected field to have %d mines, but found %d", numberOfMinesToCreate, mineCount)
 	}
+
+	if mineCount != f.MineCount {
+		t.Errorf("Field says it has %d mines, but found %d", f.MineCount, mineCount)
+	}
 }
 
 func TestNewFieldIsShuffled(t *testing.T) {

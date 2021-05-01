@@ -86,6 +86,12 @@ func (g *Game) ToggleFlaggedSquare(p Player, x, y int) {
 	sq.IsFlagged = !sq.IsFlagged
 	sq.IsRevealed = false
 	g.revealSquares(x, y)
+
+	if sq.IsFlagged {
+		f.FlagCount++
+	} else {
+		f.FlagCount--
+	}
 }
 
 func (g *Game) revealSquares(x, y int) {

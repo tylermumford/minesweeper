@@ -8,7 +8,13 @@
 
 {{$yourField := index .game.Fields .player.PlayerId}}
 <div>
-    <p class="fl">Playing Game {{.game.GameId}}</p>
+    <p class="fl">
+        Playing Game {{.game.GameId}}
+        &bullet;
+        {{$yourField.MineCount}} mines
+        &bullet;
+        {{$yourField.FlagCount}} flags placed
+    </p>
     {{if ge (len .game.Players) 2}}
     <ul class="fr">
         {{range .game.Players}}

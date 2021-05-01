@@ -19,11 +19,23 @@ class ButtonController extends Controller {
 }
 
 class GameStreamController extends Controller {
-    connect() {
-        console.log("Connected", this.element);
+    static get targets() { return ["timeoutMessage"]; }
 
-        const connection = new EventSource(document.location.href + "/stream");
-        Turbo.connectStreamSource(connection)
+    connect() {
+        this.connection = new EventSource(document.location.href + "/stream");
+        Turbo.connectStreamSource(this.connection);
+
+        const time20Minutes = 20 * 60 * 1000;
+        this.staleGameTimeout = setTimeout(() => {
+            this.timeoutMessageTarget.classList.remove("dn");
+            this.disconnect();
+        }, time20Minutes);
+    }
+
+    disconnect() {
+        Turbo.disconnectStreamSource(this.connection);
+        this.connection.close();
+        clearTimeout(this.staleGameTimeout);
     }
 }
 

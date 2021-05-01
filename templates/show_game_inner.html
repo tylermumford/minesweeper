@@ -18,6 +18,13 @@
     {{end}}
 </div>
 <p class="f6 cb">Work together in the same area of the minefield to reveal information to everyone.</p>
+<p class="f6 dn"
+    id="timeout_message"
+    data-game-stream-target="timeoutMessage"
+    data-turbo-permanent
+    role="alert">
+    Games stop auto-refreshing after 30 minutes. Reload the page to connect again.
+</p>
 
 <div class="minefield-grid-9x16">
     {{range $yourField.Squares}}

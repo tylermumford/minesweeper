@@ -139,22 +139,9 @@ func getGameStream(c echo.Context) error {
 	g := r.Game(c.Param("game_id"))
 	b["game"] = g
 
-	/*
-		It works! And it's pretty smooth.
-		There's some kind of race condition where the game connects to
-		two streams or something, and one of them sends nil games.
-		This is a pretty simple implementation. Possible improvements:
-		- Hash the game and don't render it unless needed.
-		- Check more often than every 3 seconds.
-		- Extend the loop limit after changes
-		- Properly use show_game and show_game_inner
-		- Use a goroutine to make sure this isn't blocking? Maybe not needed.
-	*/
-
-	// lastHash := hashGame(g)
 	buffer := strings.Builder{}
 
-	for i := 1; i < 100; i++ {
+	for i := 1; i < 6; i++ {
 		c.Echo().Renderer.Render(&buffer, "show_game_inner.html", b, c)
 		renderedGame := buffer.String()
 		prefixedGame := strings.ReplaceAll(renderedGame, "\n", "\ndata: ")
@@ -163,10 +150,10 @@ func getGameStream(c echo.Context) error {
 		c.Response().Flush()
 		buffer.Reset()
 
-		time.Sleep(3 * time.Second)
+		time.Sleep(2 * time.Second)
 	}
 
-	c.Response().WriteHeader(http.StatusNoContent)
+	c.Response().WriteHeader(http.StatusOK)
 
 	return nil
 }

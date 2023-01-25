@@ -12,10 +12,13 @@ import (
 
 const player_id = "player_id"
 
+// Sets up the middleware for future requests.
 func preparePlayerId(e *echo.Echo) {
 	e.Use(assignPlayerId)
 }
 
+// (Middleware function) Keeps the ID consistent
+// in cookies and Contexts.
 func assignPlayerId(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		cookie, err := c.Cookie(player_id)
@@ -38,11 +41,14 @@ func assignPlayerId(next echo.HandlerFunc) echo.HandlerFunc {
 	}
 }
 
+// Randomly creates an ID.
+// With current implementation, collisions are possible.
 func generatePlayerId() string {
 	n := rand.Intn(100000)
 	return "P" + strconv.Itoa(n)
 }
 
+// Gets the ID from a Context.
 func extractPlayerId(c echo.Context) string {
 	id := c.Get(player_id)
 	if id == nil {
@@ -51,6 +57,7 @@ func extractPlayerId(c echo.Context) string {
 	return id.(string)
 }
 
+// Uses the stored ID to get the correct Player.
 func extractPlayer(c echo.Context) *logic.Player {
 	id := c.Get(player_id)
 	if id == nil {

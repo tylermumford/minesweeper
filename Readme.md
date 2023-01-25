@@ -19,9 +19,10 @@ other players have also opened that square. Co-op minesweeper.
 When a player hits a mine, they can keep going. I'm not planning to make the game do anything
 for "winning" or "losing" yet.
 
-I don't know if it'll be fun to play like this. It might not scale beyond three or four players,
-and not being able to advance your own game might be frustrating. Minesweeper is traditionally
-very individual and algorithmic. We shall see.
+I've played a few games with family members. It's... not very fun. While waiting for another
+player, you just feel stuck instead of feeling like you're working together. At its best,
+it's interesting to watch the board fill in and feel like you're in sync. But it's a bit slow
+to get started.
 
 # Tech Choices
 
